@@ -484,3 +484,17 @@ nginx-68cbdcc668-42kdl   1/1     Running   0          30m
 nginx-68cbdcc668-lbkgz   1/1     Running   0          30m
 nginx-68cbdcc668-qkrwk   1/1     Running   0          30m  
 </pre>
+
+## Lab - Finding the IP address of the Pods
+```
+oc get po -o wide
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get po -o wide
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE                              NOMINATED NODE   READINESS GATES
+nginx-68cbdcc668-42kdl   1/1     Running   0          33m   10.131.0.9    worker-2.ocp4.training.tektutor   <none>           <none>
+nginx-68cbdcc668-lbkgz   1/1     Running   0          34m   10.128.2.9    worker-1.ocp4.training.tektutor   <none>           <none>
+nginx-68cbdcc668-qkrwk   1/1     Running   0          33m   10.128.0.93   master-1.ocp4.training.tektutor   <none>           <none>
+</pre>
