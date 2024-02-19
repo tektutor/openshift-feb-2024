@@ -395,3 +395,22 @@ replicaset.apps/nginx-bb865dc5f   1         1         1       15m
 NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/nginx   1/1     1            1           15m  
 </pre>
+
+## Lab - Deleting deployment
+```
+oc project
+oc get deploy
+oc delete deploy/nginx
+oc get deploy,rs,po
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get deploy
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   1/1     1            1           21m
+[jegan@tektutor.org ~]$ oc delete deploy/nginx
+deployment.apps "nginx" deleted
+[jegan@tektutor.org ~]$ oc get deploy,rs,po
+No resources found in jegan namespace.  
+</pre>
