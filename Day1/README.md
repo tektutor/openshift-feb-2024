@@ -183,6 +183,17 @@ Expected output
 <pre>
 [jegan@tektutor.org ~]$ oc create deploy nginx --image=bitnami/nginx:latest
 deployment.apps/nginx created
+</pre>
+
+## Lab - Listing the deployments
+```
+oc get deployments
+oc get deployment
+oc get deploy
+```
+
+Expected output
+<pre>
 [jegan@tektutor.org ~]$ oc get deployments
 NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   0/1     1            0           8s
@@ -191,5 +202,5 @@ NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   1/1     1            1           11s
 [jegan@tektutor.org ~]$ oc get deploy
 NAME    READY   UP-TO-DATE   AVAILABLE   AGE
-nginx   1/1     1            1           14s  
+nginx   1/1     1            1           14s    
 </pre>
