@@ -347,3 +347,23 @@ nginx-bb865dc5f   1         1         1       15s
 NAME              DESIRED   CURRENT   READY   AGE
 nginx-bb865dc5f   1         1         1       17s  
 </pre>
+
+## Lab - Listing the Pods
+```
+oc get pods
+oc get pod
+oc get po
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get pods
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-78jjm   1/1     Running   0          13m
+[jegan@tektutor.org ~]$ oc get pod
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-78jjm   1/1     Running   0          13m
+[jegan@tektutor.org ~]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-78jjm   1/1     Running   0          13m  
+</pre>
