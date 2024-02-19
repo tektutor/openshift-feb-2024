@@ -500,6 +500,9 @@ nginx-68cbdcc668-qkrwk   1/1     Running   0          33m   10.128.0.93   master
 </pre>
 
 ## Lab - Port forwarding for quickly test the Pod service
+In the below command, port 9090 is on the local machine. Any request that is received on localhost 9090 will be forwarded to the Pod at Port 8080.
+
+You could use any port of your choice, the only thing is it should be available on your local machine.
 ```
 oc get po
 oc port-forward pod/nginx-68cbdcc668-42kdl 9090:8080
