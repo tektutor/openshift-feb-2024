@@ -126,3 +126,4 @@ kubectl get nodes
 
 Expected output
 ![Openshift nodes](nodes.png)
+![Openshift nodes](kubeconfig.png)
