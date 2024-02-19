@@ -115,6 +115,8 @@ Examples
 - kubectl, 
 
 ## Lab - Listing the RedHat Openshift Nodes
+In the below commands, oc is the client tool we would be using to interact with Openshift cluster
+
 ```
 oc version
 oc get nodes
