@@ -502,7 +502,7 @@ nginx-68cbdcc668-qkrwk   1/1     Running   0          33m   10.128.0.93   master
 ## Lab - Port forwarding for quickly test the Pod service
 ```
 oc get po
-oc port-forward pod/
+oc port-forward pod/nginx-68cbdcc668-42kdl 9090:8080
 ```
 
 Expected output
