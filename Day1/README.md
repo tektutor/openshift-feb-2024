@@ -602,6 +602,7 @@ exit
 ## Lab - Getting inside a Pod shell (Recommended approach - Best practice)
 ```
 oc rsh deploy/nginx
+oc rsh pod/nginx-68cbdcc668-qkrwk 
 ```
 
 Expected output
@@ -613,4 +614,16 @@ nginx   3/3     3            3           73m
 $ ls
 50x.html  index.html
 $ exit  
+
+[jegan@tektutor.org openshift-feb-2024]$ oc get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-68cbdcc668-42kdl   1/1     Running   0          53m
+nginx-68cbdcc668-lbkgz   1/1     Running   0          53m
+nginx-68cbdcc668-qkrwk   1/1     Running   0          52m
+  
+[jegan@tektutor.org openshift-feb-2024]$ oc rsh pod/nginx-68cbdcc668-qkrwk 
+$ ls
+50x.html  index.html
+$ exit
+[jegan@tektutor.org openshift-feb-2024]$   
 </pre>
