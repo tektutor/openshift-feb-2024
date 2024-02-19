@@ -631,3 +631,6 @@ $ exit
 [jegan@tektutor.org openshift-feb-2024]$ oc exec -it pod/nginx-68cbdcc668-qkrwk -- bash
 1000690000@nginx-68cbdcc668-qkrwk:/app$ 
 </pre>
+
+## First day Feedback link
+https://survey.zohopublic.com/zs/IsCOhL
