@@ -548,3 +548,53 @@ Commercial support is available at
 </body>
 </html>
 ```
+
+## Lab - Getting inside a Pod shell
+```
+oc get po
+oc exec -it pod/nginx-68cbdcc668-qkrwk bash
+exit
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org openshift-feb-2024]$ oc get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-68cbdcc668-42kdl   1/1     Running   0          47m
+nginx-68cbdcc668-lbkgz   1/1     Running   0          47m
+nginx-68cbdcc668-qkrwk   1/1     Running   0          47m
+
+[jegan@tektutor.org openshift-feb-2024]$ oc exec -it pod/nginx-68cbdcc668-qkrwk bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+  
+1000690000@nginx-68cbdcc668-qkrwk:/app$ ls
+50x.html  index.html
+  
+1000690000@nginx-68cbdcc668-qkrwk:/app$ cat index.html 
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+1000690000@nginx-68cbdcc668-qkrwk:/app$ exit
+exit
+[jegan@tektutor.org openshift-feb-2024]$   
+</pre>
