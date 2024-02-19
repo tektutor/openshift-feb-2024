@@ -61,4 +61,16 @@ Examples
   - Podman ( uses CRI-O container runtime ) - Red Hat openshift starting from v4.x support only Podman
   - Containerd ( uses runC container runtime )
 
+
+## Container Orchestration Platforms
+- helps us provide an eco-system to make our application highly-available (HA)
+- your application has to be deployed within container orchestratino platform as containerized applications
+- supports inbuilt monitoring features to check the health/liveliness of application and can heal/repair when there is a need
+- when the user traffic to your application increase, additional container instances can be created to cope up with the heavy user traffic
+- when the user traffic to your application comes down, then certain containerized application workloads can be removed
+- in case you need to upgrade your live application from one version to other latest version without any downtime
+- Examples
+  - Docker SWARM ( supports only Docker - Docker Inc's native orchestration platform )
+  - Google Kubernetes ( supports multiple types of Containers including Docker )
+  - Red Hat OpenShift ( supports only Podman containerized application workloads )
  
