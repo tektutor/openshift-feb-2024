@@ -327,3 +327,23 @@ nginx   1/1     1            1           11s
 NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   1/1     1            1           14s    
 </pre>
+
+## Lab - Listing replicasets
+```
+oc get replicasets
+oc get replicaset
+oc get rs
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get replicasets
+NAME              DESIRED   CURRENT   READY   AGE
+nginx-bb865dc5f   1         1         1       11s
+[jegan@tektutor.org ~]$ oc get replicaset
+NAME              DESIRED   CURRENT   READY   AGE
+nginx-bb865dc5f   1         1         1       15s
+[jegan@tektutor.org ~]$ oc get rs
+NAME              DESIRED   CURRENT   READY   AGE
+nginx-bb865dc5f   1         1         1       17s  
+</pre>
