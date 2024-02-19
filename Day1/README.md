@@ -598,3 +598,19 @@ Commercial support is available at
 exit
 [jegan@tektutor.org openshift-feb-2024]$   
 '''
+
+## Lab - Getting inside a Pod shell (Recommended approach - Best practice)
+```
+oc rsh deploy/nginx
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org openshift-feb-2024]$ oc get deploy
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   3/3     3            3           73m
+[jegan@tektutor.org openshift-feb-2024]$ oc rsh deploy/nginx
+$ ls
+50x.html  index.html
+$ exit  
+</pre>
