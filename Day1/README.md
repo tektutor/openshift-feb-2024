@@ -120,6 +120,16 @@ Examples
   - Application container and the Secret Infra Container shares the same Network Stack, hence they share the same IP address, hostname, ports, etc.,
   - IP address is assigned on the Pod level in Kubernetes/Openshift
 
+#### Kubernetes/OpenShift objects/resources
+- Pod - Our containerized application runs within the Pod
+- ReplicaSet - This tells how many Pods of our application should be running
+- Deployment - This tells, what is the name of application deployment, what container image should be used, how many Pod instances should be running
+- DaemonSet - If your openshift cluster has 5 nodes, then it would one Pod per node
+- Job - any one time task can be achieved via Job
+- CronJob - any repeatative tasks 
+- StatefulSet - application that requires peristent volume(external storage)
+- Service - This is how we can expose an application either within the cluster or outside the cluster
+
 #### Worker Node Components
 - kubelet - Container Agent that interacts with CRI-O Container Runtime via the CRI(Container Runtime Interface)
 - Kubelet is the one that downloads the required container images and creates the Pod and updates the API Server with the status of each Pod
