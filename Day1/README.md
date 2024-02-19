@@ -273,6 +273,30 @@ openshift-user-workload-monitoring                                Active
 openshift-vsphere-infra                                           Active
 </pre>  
 
+## Lab - Checking the currently active project
+```
+oc project
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc project
+Using project "jegan" on server "https://api.ocp4.training.tektutor:6443".  
+</pre>
+
+## Lab - Switch a specific project
+```
+oc project jegan
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc project
+Using project "jegan" on server "https://api.ocp4.training.tektutor:6443".
+[jegan@tektutor.org ~]$ oc project jegan
+Already on project "jegan" on server "https://api.ocp4.training.tektutor:6443".  
+</pre> 
+
 ## Lab - Creating your first deployment in imperative style
 ```
 oc create deploy nginx --image=bitnami/nginx:latest
