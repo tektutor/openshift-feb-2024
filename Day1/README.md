@@ -172,3 +172,24 @@ kubectl get nodes
 Expected output
 ![Openshift nodes](nodes.png)
 ![Openshift nodes](kubeconfig.png)
+
+
+## Lab - Creating your first deployment in imperative style
+```
+oc create deploy nginx --image=bitnami/nginx:latest
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc create deploy nginx --image=bitnami/nginx:latest
+deployment.apps/nginx created
+[jegan@tektutor.org ~]$ oc get deployments
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   0/1     1            0           8s
+[jegan@tektutor.org ~]$ oc get deployment
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   1/1     1            1           11s
+[jegan@tektutor.org ~]$ oc get deploy
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   1/1     1            1           14s  
+</pre>
