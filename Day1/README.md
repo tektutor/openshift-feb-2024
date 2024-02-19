@@ -414,3 +414,32 @@ deployment.apps "nginx" deleted
 [jegan@tektutor.org ~]$ oc get deploy,rs,po
 No resources found in jegan namespace.  
 </pre>
+
+## Lab - Editing deployment
+```
+oc get deploy
+oc edit deploy/nginx
+```
+
+## Lab - Editing replicaset
+```
+oc get rs,
+oc edit rs/
+```
+
+## Scaling up/down
+- is managed by ReplicaSet controller
+- when is this useful
+  - let's say my microservice is deployed with a single Pod instance
+  - now too many users are trying to access my microservice, in this case we can scale up i.e add more Pods of the microservice
+  - all microservice pods are active and they serve the end-user at the same time
+  
+## Rolling update
+- is managed by Deployment controller
+- this is useful to upgrade your microservice v1.0 to microservice v2.0 without any downtime
+- assume you have deployed 3 microservice Pods of version v1.0, now you wish to upgrade to v2.0
+- When rolling update happens, the deployment controller will add one v2.0 of microservice, total microservice Pods will be 4 ( 3 Pods of v1.0 and 1 Pod of v2.0)
+- Then the replicaset controller will remove one Pod of v1.0, matching the actual Pod count with the desired number of Pods
+- The Deployment controller will create 1 more microservice Pod of v2.0, leading to total 4 Pods ( 2 Pods are of v1.0 and 2 Pods are of v2.0)
+- The Replicaset controller will remove one Pod of v1.0, effectively a total of 3 Pods ( 2 Pods of v2.0 and 1 Pod of v1.0)
+- 
