@@ -110,4 +110,16 @@ Examples
 - normally it is recommended to run only Control Plane components
 - ideally, we should not configure the master nodes to take up user application workloads
 - but, if required the master nodes can be configured to take up user application workloads in addition to runninig control plane components
-- 
+
+#### Worker Node Components
+- kubectl, 
+
+## Lab - Listing the RedHat Openshift Nodes
+```
+oc version
+oc get nodes
+oc get nodes -o wide
+```
+
+Expected output
+![Openshift nodes](nodes.png)
