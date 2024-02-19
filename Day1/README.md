@@ -133,7 +133,28 @@ Examples
 #### Worker Node Components
 - kubelet - Container Agent that interacts with CRI-O Container Runtime via the CRI(Container Runtime Interface)
 - Kubelet is the one that downloads the required container images and creates the Pod and updates the API Server with the status of each Pod
-  
+
+## Chain of things that happens when we create a deployment
+The below command is used to deploy nginx web server in Openshift
+```
+oc create deploy nginx --image=bitnami/nginx:latest
+```
+
+<pre>
+1. oc client tool will make a REST call to API Server requesting to create a Deployment db record in etcd database
+2. API Server will receive the REST call from oc client, then it creates a Deployment with name nginx in the etcd db server
+3. Anytime there is an update in etcd, that results in event trigger, an event something like New Deployment created will be triggered.
+4. New Deployment Created event is received by Deployment Controller, which then makes a REST call to API Server to create one Pod using the bitnami/nginx:latest docker image.
+5. API Server receives the request from Deployment Controller, then it creates one Pod record in etcd db server.
+6. This results in a new event triggered something like New Pod created.
+7. The scheduler receives the New Pod created event and it responds with recommendation on which node the new Pod could be deployed. Scheduler sends its scheduling recommendation as REST call to API Server.
+8. API Server receives the recommendataion from Scheduler, it retrieves the already present Pod record from etcd db server, updates the scheduling details.
+9. This results in Pod scheduled event, which is then received by kubelet running on respective nodes.  Kubelet then downloads the required container image and creates the containers associated to certain Pods.
+10. Once the containers related to a pod are created by kubelet, it updates the API Server with the status of these containers on heart-beat like fashion periodically.
+11. Once the API Server receives the status, the status of those Pods are updated in the etcd db server.
+
+</pre>
+
   
 
 ## Lab - Listing the RedHat Openshift Nodes
