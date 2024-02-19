@@ -196,7 +196,7 @@ to build a new example application in Ruby. Or use kubectl to deploy a simple Ku
 
 ## Lab - Listing projects in Openshift
 ```
-oc get project
+oc get projects
 ```
 Expected output
 <pre>
