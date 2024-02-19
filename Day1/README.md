@@ -111,8 +111,20 @@ Examples
 - ideally, we should not configure the master nodes to take up user application workloads
 - but, if required the master nodes can be configured to take up user application workloads in addition to runninig control plane components
 
+#### What is a Pod?
+- Pod is a collection of related containers
+- Any application that is deployed inside the Kubernetes/OpenShift they are deployed as Pods
+- Every Pod has atleast two containers
+  - Secret Infra Container (Pause container) that supports the Network Stack
+  - Application container
+  - Application container and the Secret Infra Container shares the same Network Stack, hence they share the same IP address, hostname, ports, etc.,
+  - IP address is assigned on the Pod level in Kubernetes/Openshift
+
 #### Worker Node Components
-- kubectl, 
+- kubelet - Container Agent that interacts with CRI-O Container Runtime via the CRI(Container Runtime Interface)
+- Kubelet is the one that downloads the required container images and creates the Pod and updates the API Server with the status of each Pod
+  
+  
 
 ## Lab - Listing the RedHat Openshift Nodes
 In the below commands, oc and kubectl is the client tool we would be using to interact with Openshift cluster
