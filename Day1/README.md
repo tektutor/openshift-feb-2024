@@ -438,8 +438,12 @@ oc edit deploy/nginx
 
 ## Lab - Editing replicaset
 ```
-oc get rs,
-oc edit rs/
+oc get rs
+oc edit rs/nginx-68cbdcc668
 ```
 
-- 
+## Lab - Edit Pod
+```
+oc get po
+oc edit pod/nginx-68cbdcc668-qkrwk
+```
