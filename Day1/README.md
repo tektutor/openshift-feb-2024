@@ -367,3 +367,31 @@ nginx-bb865dc5f-78jjm   1/1     Running   0          13m
 NAME                    READY   STATUS    RESTARTS   AGE
 nginx-bb865dc5f-78jjm   1/1     Running   0          13m  
 </pre>
+
+## Lab - Listing deployment, replicaset and pods in one command
+```
+oc get deploy,rs,po
+oc get po,rs,deploy
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get deploy,rs,po
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   1/1     1            1           14m
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   1         1         1       14m
+
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/nginx-bb865dc5f-78jjm   1/1     Running   0          14m
+[jegan@tektutor.org ~]$ oc get po,rs,deploy
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/nginx-bb865dc5f-78jjm   1/1     Running   0          15m
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   1         1         1       15m
+
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   1/1     1            1           15m  
+</pre>
