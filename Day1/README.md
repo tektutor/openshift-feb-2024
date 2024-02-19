@@ -498,3 +498,50 @@ nginx-68cbdcc668-42kdl   1/1     Running   0          33m   10.131.0.9    worker
 nginx-68cbdcc668-lbkgz   1/1     Running   0          34m   10.128.2.9    worker-1.ocp4.training.tektutor   <none>           <none>
 nginx-68cbdcc668-qkrwk   1/1     Running   0          33m   10.128.0.93   master-1.ocp4.training.tektutor   <none>           <none>
 </pre>
+
+## Lab - Port forwarding for quickly test the Pod service
+```
+oc get po
+oc port-forward pod/
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc port-forward pod/nginx-68cbdcc668-42kdl 9090:8080
+Forwarding from 127.0.0.1:9090 -> 8080
+Forwarding from [::1]:9090 -> 8080
+Handling connection for 9090  
+</pre>
+
+On a different tab on the terminal, you can access the web page
+```
+curl http://localhost:9090
+```
+
+Expected output
+```
+[jegan@tektutor.org openshift-feb-2024]$ curl http://localhost:9090
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
