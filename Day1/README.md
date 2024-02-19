@@ -447,3 +447,40 @@ oc edit rs/nginx-68cbdcc668
 oc get po
 oc edit pod/nginx-68cbdcc668-qkrwk
 ```
+
+## Lab - Scaling up/down nginx deployment
+```
+oc get po
+oc scale deploy/nginx --replicas=5
+oc get po -w
+oc scale deploy/nginx --replicas=3
+oc get po -w
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-68cbdcc668-42kdl   1/1     Running   0          30m
+nginx-68cbdcc668-lbkgz   1/1     Running   0          30m
+nginx-68cbdcc668-qkrwk   1/1     Running   0          30m
+[jegan@tektutor.org ~]$ oc scale deploy/nginx --replicas=5
+deployment.apps/nginx scaled
+  
+[jegan@tektutor.org ~]$ oc get po -w
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-68cbdcc668-42kdl   1/1     Running   0          30m
+nginx-68cbdcc668-6fhzw   1/1     Running   0          4s
+nginx-68cbdcc668-lbkgz   1/1     Running   0          30m
+nginx-68cbdcc668-qkrwk   1/1     Running   0          30m
+nginx-68cbdcc668-vmb5p   1/1     Running   0          4s
+  
+^C[jegan@tektutor.org ~]$ oc scale deploy/nginx --replicas=3
+deployment.apps/nginx scaled
+  
+[jegan@tektutor.org ~]$ oc get po -w
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-68cbdcc668-42kdl   1/1     Running   0          30m
+nginx-68cbdcc668-lbkgz   1/1     Running   0          30m
+nginx-68cbdcc668-qkrwk   1/1     Running   0          30m  
+</pre>
