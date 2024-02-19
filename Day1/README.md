@@ -557,7 +557,7 @@ exit
 ```
 
 Expected output
-<pre>
+'''
 [jegan@tektutor.org openshift-feb-2024]$ oc get po
 NAME                     READY   STATUS    RESTARTS   AGE
 nginx-68cbdcc668-42kdl   1/1     Running   0          47m
@@ -597,4 +597,4 @@ Commercial support is available at
 1000690000@nginx-68cbdcc668-qkrwk:/app$ exit
 exit
 [jegan@tektutor.org openshift-feb-2024]$   
-</pre>
+'''
