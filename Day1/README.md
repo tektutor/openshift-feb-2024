@@ -73,4 +73,41 @@ Examples
   - Docker SWARM ( supports only Docker - Docker Inc's native orchestration platform )
   - Google Kubernetes ( supports multiple types of Containers including Docker )
   - Red Hat OpenShift ( supports only Podman containerized application workloads )
- 
+
+## Google Kubernetes
+- The master and worker nodes they can use any of the below Operating System
+  - Ubuntu Linux
+  - RHEL
+  - Oracle Linux
+  - Amazon Linux
+
+## Red Hat OpenShift
+- container orchestration platforms is setup a cluster of servers
+- the servers could be physical machines or virtual machines or public cloud based virtual machines
+- there are two types of Nodes(Servers)
+  - master node ( Control Plane components runs here )
+  - worker node ( user application workloads runs here )
+- OpenShift master Nodes
+  - supports only RHCOS (Red Hat Enterprise Core OS)
+- OpenShift worker Nodes
+  - supports two options (Either we could use RHEL or RHCOS OS)
+- Control Plane Components ( only runs in master nodes )
+  - API Server
+  - etcd (key/value datastore/db server)
+  - scheduler
+  - controller managers ( a collection of many controllers - monitoring )
+
+#### RedHat Enterprise Core OS
+- this is an optimized OS for Container Orchestration Platforms like OpenShift
+- the configuration to boot this OS comes a special file called ignition which is not part of the RHCOS
+- the ignition files that has boot configuration of RHCOS are normally kept in a load balancer running on an external VM/Physical machine
+- this OS has puts lot of restrications ( imposes standards & conventions - enforces best practices )
+- it only allows to modify files in certain folders
+- for instance many folders have only ready only access
+- many ports are reserved for OpenShift's private use, applications can't use the reserved ports
+
+#### Openshift/Kubernetes master nodes
+- normally it is recommended to run only Control Plane components
+- ideally, we should not configure the master nodes to take up user application workloads
+- but, if required the master nodes can be configured to take up user application workloads in addition to runninig control plane components
+- 
