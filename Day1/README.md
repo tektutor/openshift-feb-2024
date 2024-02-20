@@ -763,10 +763,12 @@ Expected output
 [jegan@tektutor.org ~]$ oc get svc
 NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 nginx   ClusterIP   172.30.148.77   <none>        8080/TCP   175m
+  
 [jegan@tektutor.org ~]$ oc get deploy
 NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   5/5     5            5           177m
 test    1/1     1            1           152m
+  
 [jegan@tektutor.org ~]$ oc delete svc/nginx
 service "nginx" deleted
 [jegan@tektutor.org ~]$ oc get svc
@@ -774,9 +776,11 @@ No resources found in jegan namespace.
 
 [jegan@tektutor.org ~]$ oc expose deploy/nginx --type=NodePort --port=8080
 service/nginx exposed
+  
 [jegan@tektutor.org ~]$ oc get svc
 NAME    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 nginx   NodePort   172.30.65.236   <none>        8080:31867/TCP   2s
+  
 [jegan@tektutor.org ~]$ oc describe svc/nginx
 Name:                     nginx
 Namespace:                jegan
