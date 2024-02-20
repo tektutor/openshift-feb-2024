@@ -861,5 +861,60 @@ Commercial support is available at
 </html>
 ```
 
+## Lab - Creating a LoadBalancer external service
+```
+oc get deploy
+oc get svc
+oc delete svc/nginx
+
+oc expose deploy/nginx --type=LoadBalancer --port=8080
+oc get svc
+```
+
+Expected output
+```
+[jegan@tektutor.org openshift-feb-2024]$ oc get svc
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+nginx   LoadBalancer   172.30.229.243   192.168.122.20   8080:30309/TCP   58m
+[jegan@tektutor.org openshift-feb-2024]$ oc delete svc/nginx
+service "nginx" deleted
+[jegan@tektutor.org openshift-feb-2024]$ oc get deploy
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   5/5     5            5           4h12m
+test    1/1     1            1           3h47m
+[jegan@tektutor.org openshift-feb-2024]$ oc expose deploy/nginx --type=LoadBalancer --port=8080
+service/nginx exposed
+[jegan@tektutor.org openshift-feb-2024]$ oc get svc
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+nginx   LoadBalancer   172.30.181.133   192.168.122.20   8080:31796/TCP   2s
+[jegan@tektutor.org openshift-feb-2024]$ curl 192.168.122.20:8080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
 ## My blog
 https://medium.com/tektutor/using-metallb-loadbalancer-with-bare-metal-openshift-onprem-4230944bfa35
+
+## References
+You wish to learn more about metallb operator https://metallb.universe.tf/installation/
