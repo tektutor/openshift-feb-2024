@@ -800,3 +800,48 @@ Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:                   <none>  
 </pre>
+
+## Lab - Accessing the NodePort external service
+```
+oc get node -o wide
+
+curl master-1.ocp4.training.tektutor:31867
+curl 192.168.122.97:31867
+curl 192.168.122.13:31867
+```
+
+Expected output
+```
+[jegan@tektutor.org ~]$ oc get node -o wide
+NAME                              STATUS   ROLES                         AGE   VERSION            INTERNAL-IP      EXTERNAL-IP   OS-IMAGE                                                       KERNEL-VERSION                 CONTAINER-RUNTIME
+master-1.ocp4.training.tektutor   Ready    control-plane,master,worker   28h   v1.27.10+28ed2d7   192.168.122.97   <none>        Red Hat Enterprise Linux CoreOS 414.92.202402051952-0 (Plow)   5.14.0-284.52.1.el9_2.x86_64   cri-o://1.27.3-2.rhaos4.14.git03502b6.el9
+master-2.ocp4.training.tektutor   Ready    control-plane,master,worker   28h   v1.27.10+28ed2d7   192.168.122.13   <none>        Red Hat Enterprise Linux CoreOS 414.92.202402051952-0 (Plow)   5.14.0-284.52.1.el9_2.x86_64   cri-o://1.27.3-2.rhaos4.14.git03502b6.el9
+master-3.ocp4.training.tektutor   Ready    control-plane,master,worker   28h   v1.27.10+28ed2d7   192.168.122.69   <none>        Red Hat Enterprise Linux CoreOS 414.92.202402051952-0 (Plow)   5.14.0-284.52.1.el9_2.x86_64   cri-o://1.27.3-2.rhaos4.14.git03502b6.el9
+worker-1.ocp4.training.tektutor   Ready    worker                        28h   v1.27.10+28ed2d7   192.168.122.88   <none>        Red Hat Enterprise Linux CoreOS 414.92.202402051952-0 (Plow)   5.14.0-284.52.1.el9_2.x86_64   cri-o://1.27.3-2.rhaos4.14.git03502b6.el9
+worker-2.ocp4.training.tektutor   Ready    worker                        28h   v1.27.10+28ed2d7   192.168.122.52   <none>        Red Hat Enterprise Linux CoreOS 414.92.202402051952-0 (Plow)   5.14.0-284.52.1.el9_2.x86_64   cri-o://1.27.3-2.rhaos4.14.git03502b6.el9
+
+[jegan@tektutor.org ~]$ curl master-1.ocp4.training.tektutor:31867
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
