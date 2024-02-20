@@ -21,6 +21,8 @@
 - for each loadbalancer service we create in aws managed openshift (ROSA) or Azure managed openshift it will spin an external load balancer, this will attract additional charges from AWS/Azure
 
 ## What is the recommended technique used to expose an external service in Openshift?
+Openshift route is alternate feature of odePort service.  Route makes your application accessible to the outside world without the complications of NodePort service with an user-friendly url.
+
 ```
 oc new-project jegan
 oc create deploy nginx --image=bitnami/nginx:latest --replicas=3
