@@ -860,3 +860,6 @@ Commercial support is available at
 </body>
 </html>
 ```
+
+## My blog
+https://medium.com/tektutor/using-metallb-loadbalancer-with-bare-metal-openshift-onprem-4230944bfa35
