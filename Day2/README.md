@@ -102,6 +102,93 @@ Commercial support is available at
 </html>
 ```
 
+## Lab - Creating an ingress rule
+You need to find the base domain of your Openshift cluster
+```
+oc describe ingresscontroller/default -n openshift-ingress-operator | grep Domain:
+```
+Expected output
+<pre>
+[jegan@tektutor.org openshift-feb-2024]$ oc describe ingresscontroller/default -n openshift-ingress-operator | grep Domain:
+  Domain:                  apps.ocp4.training.tektutor
+</pre>
 
+As per the output you got from the above command, you need to update the ingress.yml under Day2/ingress folder.
+
+```
+oc create deploy nginx --image=bitnami/nginx:latest --replicas=3
+oc expose deploy/nginx --port=8080
+
+oc create deploy hello --image=tektutor/spring-ms:1.0 --replicas=3
+oc expose deploy/hello --port=8080
+
+oc get svc
+
+cd ~/openshift-feb-2024
+git pull
+cd Day2/ingress
+oc apply -f ingress.yml
+
+oc get ingress
+oc describe ingress/tektutor
+```
+
+Expected output
+```
+[jegan@tektutor.org openshift-feb-2024]$ oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+No resources found in jegan namespace.
+[jegan@tektutor.org openshift-feb-2024]$ oc create deployment nginx --image=bitnami/nginx --replicas=3
+deployment.apps/nginx created
+[jegan@tektutor.org openshift-feb-2024]$ oc create deployment hello --image=tektutor/spring-ms:1.0 --replicas=3
+deployment.apps/hello created
+[jegan@tektutor.org openshift-feb-2024]$ oc expose deploy/nginx --port=8080
+service/nginx exposed
+[jegan@tektutor.org openshift-feb-2024]$ oc expose deploy/hello--port=8080
+Error from server (NotFound): deployments.apps "hello--port=8080" not found
+[jegan@tektutor.org openshift-feb-2024]$ oc expose deploy/hello --port=8080
+service/hello exposed
+[jegan@tektutor.org openshift-feb-2024]$ oc get svc
+NAME    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+hello   ClusterIP   172.30.14.211    <none>        8080/TCP   3s
+nginx   ClusterIP   172.30.139.232   <none>        8080/TCP   12s
+[jegan@tektutor.org openshift-feb-2024]$ cd Day2
+[jegan@tektutor.org Day2]$ ls
+ingress  README.md
+[jegan@tektutor.org Day2]$ cd ingress/
+[jegan@tektutor.org ingress]$ ls
+ingress.yml
+[jegan@tektutor.org ingress]$ oc apply -f ingress.yml 
+ingress.networking.k8s.io/tektutor created
+[jegan@tektutor.org ingress]$ oc get ingress
+NAME       CLASS    HOSTS                                  ADDRESS                                      PORTS   AGE
+tektutor   <none>   tektutor.apps.ocp4.training.tektutor   router-default.apps.ocp4.training.tektutor   80      4s
+[jegan@tektutor.org ingress]$ curl tektutor.apps.ocp4.training.tektutor/nginx
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+[jegan@tektutor.org ingress]$ curl tektutor.apps.ocp4.training.tektutor/hello
+Greetings from Spring Boot!
+```
 
 
