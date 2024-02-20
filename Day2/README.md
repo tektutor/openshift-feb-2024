@@ -1,5 +1,8 @@
 # Day 2
 
+## My Blog about OpenShift Ingress
+https://medium.com/@jegan_50867/redhat-openshift-ingress-e91f27a35773
+
 ## Adavantages of ClusterIP 
 - it is free as this type of loadbalancing service is totally implemented by Kubernetes/Openshift, hence no extra charges from AWS/Azure or any public cloud
 
