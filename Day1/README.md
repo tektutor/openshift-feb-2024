@@ -707,8 +707,14 @@ Events:            <none>
 Let's find the dns pod running on each node (daemonset). Note down the service IP address of dns-default
 ```
 oc get po -o wide -n openshift-dns
-oc describe svc/dns-default -n openshift-dns
+oc get svc/dns-default -n openshift-dns
 ```
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get svc -n openshift-dns
+NAME          TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)                  AGE
+dns-default   ClusterIP   172.30.0.10   <none>        53/UDP,53/TCP,9154/TCP   27h  
+</pre>
 
 Let's open shell inside nginx pod, the etc/resolv.conf will point to the dns-default service IP address
 ```
