@@ -113,7 +113,7 @@ Expected output
   Domain:                  apps.ocp4.training.tektutor
 </pre>
 
-As per the output you got from the above command, you need to update the ingress.yml under Day2/ingress folder.
+As per the output you got for the above command, you need to update the ingress.yml under Day2/ingress folder.
 
 ```
 oc create deploy nginx --image=bitnami/nginx:latest --replicas=3
