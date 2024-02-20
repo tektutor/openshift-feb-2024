@@ -802,6 +802,8 @@ Events:                   <none>
 </pre>
 
 ## Lab - Accessing the NodePort external service
+Openshift assigns a nodeport in the range 30000 to 32767.  In this case, 31867 is the node port that is opened on all nodes. Hence, we should be able to access the nodeport service via any node irrespective where the respective pods are running.
+
 ```
 oc get node -o wide
 
