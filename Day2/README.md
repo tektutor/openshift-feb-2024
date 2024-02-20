@@ -29,7 +29,7 @@
 - For an Ingress to work in Kubernetes/Openshift, we need the below
   - An IngressController should be running ( Nginx Ingress Controller or HAProxy Ingress Controller )
   - Ingress Rule
-  - Load Balancer
+  - Load Balancer ( Nginx, HAProxy, etc., )
   
 - Nginx Ingress Controller knows how to configure a Nginx Load Balancer
 - HAProxy Ingress Controller knows how to configure a HAProxy Load Balancer
