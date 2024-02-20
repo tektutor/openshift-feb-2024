@@ -915,3 +915,6 @@ Commercial support is available at
 
 ## My blog
 https://medium.com/tektutor/using-metallb-loadbalancer-with-bare-metal-openshift-onprem-4230944bfa35
+
+## References
+You wish to learn more about metallb operator https://metallb.universe.tf/installation/
