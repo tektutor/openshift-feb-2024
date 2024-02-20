@@ -174,6 +174,17 @@ oc create deploy nginx --image=bitnami/nginx:latest
 - The Deployment controller will create 1 more microservice Pod of v2.0, leading to total 4 Pods ( 2 Pods are of v1.0 and 2 Pods are of v2.0)
 - The Replicaset controller will remove one Pod of v1.0, effectively a total of 3 Pods ( 2 Pods of v2.0 and 1 Pod of v1.0)
 
+## Info - OpenShift Service
+- Let's say we are developing a microservice that needs to fetch some data from a database
+- Assume we have create two deployments one for the microserive and the other for the database
+- We can't use the IP address of the database in the microservice application, the reason is the Pod is temporary, because the Pod life time is controlled by OpenShift, hence they can be replaced, destroyed at point of time
+- To solve this problem, we need something which is permanent for the application to connect to a database or similar service
+- Service represents a group of load balanced Pods that belongs to a single deployment
+- There are 3 types of Service supported in Kubernetes/OpenShift
+  1. ClusterIP (Internal service - accessible only within in Kubernetes/OpenShift cluster)
+  2. NodePort ( External service - accessible outside the cluster )
+  3. Loadbalancer (External service - meant for cloud - accessible outside the cluster )
+
 ## Lab - Listing the RedHat Openshift Nodes
 In the below commands, oc and kubectl is the client tool we would be using to interact with Openshift cluster
 
