@@ -703,3 +703,18 @@ Session Affinity:  None
 Events:            <none>  
 </pre>
 
+## Lab - Checking Pod /etc/resolv.conf file for dns configuration
+Let's find the dns pod running on each node (daemonset). Note down the service IP address of dns-default
+```
+oc get po -o wide -n openshift-dns
+oc describe svc/dns-default -n openshift-dns
+```
+
+Let's open shell inside nginx pod, the etc/resolv.conf will point to the dns-default service IP address
+```
+oc get po
+oc rsh deploy/nginx
+cat /etc/resolv.conf
+```
+
+This is how the service discovery i.e given a service name it gets resolved to its IP address by the DNS pod.
