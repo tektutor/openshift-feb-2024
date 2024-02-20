@@ -745,3 +745,54 @@ curl http://nginx:8080
 In the above command, the nginx is the name of the clusterip internal service we created for nginx deployment.  The port 8080 is the service port.
 
 Since this nginx service is an internal service, it can only be accessed from within the openshift cluster.
+
+## Lab - Creating a NodePort external service for nginx deployment
+```
+oc get svc
+oc get deploy
+oc delete svc/nginx
+oc get svc
+
+oc expose deploy/nginx --type=NodePort --port=8080
+oc get svc
+oc describe svc/nginx
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org ~]$ oc get svc
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+nginx   ClusterIP   172.30.148.77   <none>        8080/TCP   175m
+[jegan@tektutor.org ~]$ oc get deploy
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   5/5     5            5           177m
+test    1/1     1            1           152m
+[jegan@tektutor.org ~]$ oc delete svc/nginx
+service "nginx" deleted
+[jegan@tektutor.org ~]$ oc get svc
+No resources found in jegan namespace.  
+
+[jegan@tektutor.org ~]$ oc expose deploy/nginx --type=NodePort --port=8080
+service/nginx exposed
+[jegan@tektutor.org ~]$ oc get svc
+NAME    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+nginx   NodePort   172.30.65.236   <none>        8080:31867/TCP   2s
+[jegan@tektutor.org ~]$ oc describe svc/nginx
+Name:                     nginx
+Namespace:                jegan
+Labels:                   app=nginx
+Annotations:              <none>
+Selector:                 app=nginx
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       172.30.65.236
+IPs:                      172.30.65.236
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  31867/TCP
+Endpoints:                10.128.0.195:8080,10.128.2.21:8080,10.129.0.147:8080 + 2 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>  
+</pre>
