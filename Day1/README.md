@@ -185,6 +185,19 @@ oc create deploy nginx --image=bitnami/nginx:latest
   2. NodePort ( External service - accessible outside the cluster )
   3. Loadbalancer (External service - meant for cloud - accessible outside the cluster )
 
+## Custom Resource Definintions(CRD)
+- Kubernetes supports extending Kubernetes API by way adding your own Custom Resource Definitions
+- This way, you can add your own Custom Resource Definitions
+- Once the Custom Resource Definitions are deployed onto Kubernetes/OpenShift, then your cluster will start recognizing the Custom Resource
+- You can then create Custom Resource following the schema properties defined in CRDs
+- You also need to have Custom Controllers to manage your Custom Resources, as the Controllers that comes with Kubernetes or OpenShift is not going to be aware of your Custom Resource
+
+## What is Kubernetes/OpenShift Operators
+- Operators is a combination of many Custom Resources and Custom Controllers
+- You can develop your own Custom Operators by using Operator SDK Framework
+- As Kubernetes/OpenShift is developed in Google go lang, the native operator language is Go
+- But you can also develop custom operators using Ansible
+
 ## Lab - Listing the RedHat Openshift Nodes
 In the below commands, oc and kubectl is the client tool we would be using to interact with Openshift cluster
 
