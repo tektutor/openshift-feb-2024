@@ -722,6 +722,14 @@ oc get po
 oc rsh deploy/nginx
 cat /etc/resolv.conf
 ```
+Expected output
+<pre>
+$ cat /etc/resolv.conf
+search jegan.svc.cluster.local svc.cluster.local cluster.local ocp4.training.tektutor
+nameserver 172.30.0.10
+options ndots:5
+$ exit  
+</pre>
 
 This is how the service discovery i.e given a service name it gets resolved to its IP address by the DNS pod.
 
