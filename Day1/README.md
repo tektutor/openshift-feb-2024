@@ -632,5 +632,63 @@ $ exit
 1000690000@nginx-68cbdcc668-qkrwk:/app$ 
 </pre>
 
-## First day Feedback link
-https://survey.zohopublic.com/zs/IsCOhL
+## Lab - Creating an internal service of type ClusterIP
+```
+oc project
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3
+oc get deploy,rs,po
+oc get po
+
+oc expose deploy/nginx --type=ClusterIP --port=8080
+oc get svc
+oc describe svc/nginx
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org openshift-feb-2024]$ oc create deployment nginx --image=bitnami/nginx:latest --replicas=3
+deployment.apps/nginx created
+  
+[jegan@tektutor.org openshift-feb-2024]$ oc get deploy,rs,po
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   0/3     3            0           6s
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   3         3         0       6s
+
+NAME                        READY   STATUS              RESTARTS   AGE
+pod/nginx-bb865dc5f-88x8t   0/1     ContainerCreating   0          6s
+pod/nginx-bb865dc5f-j2q84   0/1     ContainerCreating   0          6s
+pod/nginx-bb865dc5f-n25vk   0/1     ContainerCreating   0          6s
+  
+[jegan@tektutor.org openshift-feb-2024]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-88x8t   1/1     Running   0          22s
+nginx-bb865dc5f-j2q84   1/1     Running   0          22s
+nginx-bb865dc5f-n25vk   1/1     Running   0          22s
+  
+[jegan@tektutor.org openshift-feb-2024]$ oc expose deploy/nginx --type=ClusterIP --port=8080
+service/nginx exposed
+  
+[jegan@tektutor.org openshift-feb-2024]$ oc get svc
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+nginx   ClusterIP   172.30.148.77   <none>        8080/TCP   4s 
+
+[jegan@tektutor.org openshift-feb-2024]$ oc describe svc/nginx
+Name:              nginx
+Namespace:         jegan
+Labels:            app=nginx
+Annotations:       <none>
+Selector:          app=nginx
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                172.30.148.77
+IPs:               172.30.148.77
+Port:              <unset>  8080/TCP
+TargetPort:        8080/TCP
+Endpoints:         10.128.0.195:8080,10.128.2.21:8080,10.131.0.15:8080
+Session Affinity:  None
+Events:            <none>  
+</pre>
+
