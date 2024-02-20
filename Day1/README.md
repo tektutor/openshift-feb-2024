@@ -718,3 +718,16 @@ cat /etc/resolv.conf
 ```
 
 This is how the service discovery i.e given a service name it gets resolved to its IP address by the DNS pod.
+
+## Lab - Testing the internal cluster ip service
+
+Let's create a test pod to access the nginx service
+```
+oc create deployment test --image=tektutor/spring-ms:1.0
+oc describe svc/nginx
+oc rsh deploy/test
+curl http://nginx:8080
+```
+In the above command, the nginx is the name of the clusterip internal service we created for nginx deployment.  The port 8080 is the service port.
+
+Since this nginx service is an internal service, it can only be accessed from within the openshift cluster.
