@@ -20,6 +20,19 @@
 - it is expensive
 - for each loadbalancer service we create in aws managed openshift (ROSA) or Azure managed openshift it will spin an external load balancer, this will attract additional charges from AWS/Azure
 
+## What is Kubernetes/Openshift Ingress?
+- it is not a service
+- it is forwarding rule
+- Ingress configures some set of rules
+- In ClusterIP, NodePort or LoadBalancer service load-balances the pods of a specific deployment
+- In case of Ingress, it is a set of rule that an Ingress controller picks and applies on Load Balancer
+- For an Ingress to work in Kubernetes/Openshift, we need the below
+  - An IngressController should be running ( Nginx Ingress Controller or HAProxy Ingress Controller )
+  - Ingress Rule
+  - Load Balancer
+  
+- Nginx Ingress Controller knows how to configure a Nginx Load Balancer
+- HAProxy Ingress Controller knows how to configure a HAProxy Load Balancer
 ## What is the recommended technique used to expose an external service in Openshift?
 Openshift route is alternate feature of odePort service.  Route makes your application accessible to the outside world without the complications of NodePort service with an user-friendly url.
 
@@ -88,6 +101,7 @@ Commercial support is available at
 </body>
 </html>
 ```
+
 
 
 
