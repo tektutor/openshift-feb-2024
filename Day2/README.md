@@ -407,3 +407,17 @@ Endpoints:         10.128.0.218:8080,10.128.2.61:8080,10.129.0.229:8080 + 2 more
 Session Affinity:  None
 Events:            <none>  
 </pre>
+
+## Lab - Deleting service or any openshift resource in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+oc delete -f nginx-svc.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc delete -f nginx-svc.yml 
+service "nginx" deleted  
+</pre>
