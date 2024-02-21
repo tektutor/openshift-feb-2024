@@ -365,3 +365,45 @@ nginx-bb865dc5f-gnbjp   1/1     Running   0          20s
 nginx-bb865dc5f-jxmc5   1/1     Running   0          2m17s
 nginx-bb865dc5f-w4ldp   1/1     Running   0          20s  
 </pre>
+
+## Lab - Creating a ClusterIP internal service in declarative style
+```
+oc expose deploy/nginx --type=ClusterIP --port=8080 --dry-run=client -o yaml > nginx-svc.yml
+oc apply -f nginx-svc.yml
+
+oc get svc
+oc describe svc/nginx
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ ls
+nginx-deploy.yml
+  
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=ClusterIP --port=8080 --dry-run=client -o yaml > nginx-svc.yml
+  
+[jegan@tektutor.org declartive-manifests]$ vim nginx-svc.yml 
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-svc.yml 
+service/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get svc
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+nginx   ClusterIP   172.30.89.193   <none>        8080/TCP   2s
+  
+[jegan@tektutor.org declartive-manifests]$ oc describe svc/nginx
+Name:              nginx
+Namespace:         jegan
+Labels:            app=nginx
+Annotations:       <none>
+Selector:          app=nginx
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                172.30.89.193
+IPs:               172.30.89.193
+Port:              <unset>  8080/TCP
+TargetPort:        8080/TCP
+Endpoints:         10.128.0.218:8080,10.128.2.61:8080,10.129.0.229:8080 + 2 more...
+Session Affinity:  None
+Events:            <none>  
+</pre>
