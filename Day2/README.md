@@ -259,3 +259,40 @@ Expected output
 ![Mariadb](mariadb-5.png)
 ![Mariadb](mariadb-6.png)
 ![Mariadb](mariadb-7.png)
+
+## Lab - Creating nginx deployment in declarative style
+```
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o json
+
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml > nginx-deploy.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: bitnami/nginx:latest
+        name: nginx
+        resources: {}
+status: {}
+</pre>
