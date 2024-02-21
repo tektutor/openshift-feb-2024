@@ -328,3 +328,40 @@ nginx-bb865dc5f-4v2bl   1/1     Running   0          18s
 nginx-bb865dc5f-cn2fd   1/1     Running   0          18s
 nginx-bb865dc5f-jxmc5   1/1     Running   0          18s
 </pre>
+
+## Lab - Scale up/down a deployment in declarative style
+
+Edit the replicas count in the nginx-deploy.yml and apply the changes
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+vim nginx-deploy.yml
+oc apply -f nginx-deploy.yml
+oc get po -w
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ vim nginx-deploy.yml 
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx configured
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po -w
+NAME                    READY   STATUS              RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running             0          2m1s
+nginx-bb865dc5f-cn2fd   1/1     Running             0          2m1s
+nginx-bb865dc5f-gnbjp   0/1     ContainerCreating   0          4s
+nginx-bb865dc5f-jxmc5   1/1     Running             0          2m1s
+nginx-bb865dc5f-w4ldp   0/1     ContainerCreating   0          4s
+nginx-bb865dc5f-w4ldp   1/1     Running             0          14s
+nginx-bb865dc5f-gnbjp   1/1     Running             0          14s
+  
+^C[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running   0          2m17s
+nginx-bb865dc5f-cn2fd   1/1     Running   0          2m17s
+nginx-bb865dc5f-gnbjp   1/1     Running   0          20s
+nginx-bb865dc5f-jxmc5   1/1     Running   0          2m17s
+nginx-bb865dc5f-w4ldp   1/1     Running   0          20s  
+</pre>
