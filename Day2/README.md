@@ -604,3 +604,123 @@ nginx-rs-prjgq   0/1     ContainerCreating   0          3s
 nginx-rs-qkrc9   1/1     Running             0          95s
 nginx-rs-r246m   1/1     Running             0          95s  
 </pre>
+
+## Lab - Rolling update in declarative style
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc get deploy --show-labels
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE     LABELS
+nginx   5/5     5            5           4m11s   app=nginx,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs --show-labels
+NAME               DESIRED   CURRENT   READY   AGE     LABELS
+nginx-676b4cfdcf   5         5         5       4m17s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po --show-labels
+NAME                     READY   STATUS    RESTARTS   AGE     LABELS
+nginx-676b4cfdcf-28965   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-6sv7w   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-7k627   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-wqk6n   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-zc77r   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ vim nginx-deploy.yml 
+  
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx configured
+  
+[jegan@tektutor.org declartive-manifests]$ oc get deploy --show-labels
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE     LABELS
+nginx   5/5     5            5           6m10s   app=nginx,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc label deploy nginx ver=1.23 --overwrite
+deployment.apps/nginx labeled
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-676b4cfdcf   0         0         0       7m20s
+nginx-6bd4ccf6c4   5         5         5       78s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs --show-labels
+NAME               DESIRED   CURRENT   READY   AGE     LABELS
+nginx-676b4cfdcf   0         0         0       7m26s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-6bd4ccf6c4   5         5         5       84s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc label rs nginx-6bd4ccf6c4 ver=1.23 --overwrite
+replicaset.apps/nginx-6bd4ccf6c4 labeled
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-6bd4ccf6c4-6x6z5   1/1     Running   0          111s
+nginx-6bd4ccf6c4-d9bxd   1/1     Running   0          111s
+nginx-6bd4ccf6c4-dblxm   1/1     Running   0          111s
+nginx-6bd4ccf6c4-h48pg   1/1     Running   0          108s
+nginx-6bd4ccf6c4-hxh5v   1/1     Running   0          108s
+nginx-879556f79-9wq75    1/1     Running   0          4s
+nginx-879556f79-c82jk    1/1     Running   0          4s
+nginx-879556f79-h5xpc    1/1     Running   0          4s
+nginx-879556f79-hxv8j    1/1     Running   0          4s
+nginx-879556f79-vwmw5    1/1     Running   0          4s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po --show-labels
+NAME                     READY   STATUS    RESTARTS   AGE     LABELS
+nginx-6bd4ccf6c4-6x6z5   1/1     Running   0          2m11s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-d9bxd   1/1     Running   0          2m11s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-dblxm   1/1     Running   0          2m11s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-h48pg   1/1     Running   0          2m8s    app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-hxh5v   1/1     Running   0          2m8s    app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-879556f79-9wq75    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-c82jk    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-h5xpc    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-hxv8j    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-vwmw5    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+
+[jegan@tektutor.org declartive-manifests]$ oc label po -l app=nginx ver=1.23 --overwrite
+pod/nginx-6bd4ccf6c4-6x6z5 labeled
+pod/nginx-6bd4ccf6c4-d9bxd labeled
+pod/nginx-6bd4ccf6c4-dblxm labeled
+pod/nginx-6bd4ccf6c4-h48pg labeled
+pod/nginx-6bd4ccf6c4-hxh5v labeled
+pod/nginx-879556f79-9wq75 labeled
+pod/nginx-879556f79-c82jk labeled
+pod/nginx-879556f79-h5xpc labeled
+pod/nginx-879556f79-hxv8j labeled
+pod/nginx-879556f79-vwmw5 labeled
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po --show-labels
+NAME                     READY   STATUS    RESTARTS   AGE     LABELS
+nginx-6bd4ccf6c4-6x6z5   1/1     Running   0          2m50s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-8cb9v   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-cmrk2   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-d9bxd   1/1     Running   0          2m50s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-dblxm   1/1     Running   0          2m50s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-h48pg   1/1     Running   0          2m47s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-hxh5v   1/1     Running   0          2m47s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-m8pwp   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-s58xt   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-wgf57   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-879556f79-7m2rj    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-9wq75    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-c82jk    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-gk58h    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-h5xpc    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-hxv8j    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-l8tk8    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-lsgw5    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-rmg68    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-vwmw5    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-676b4cfdcf   0         0         0       9m12s
+nginx-6bd4ccf6c4   5         5         5       3m10s
+nginx-879556f79    5         5         5       83s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs --show-labels
+NAME               DESIRED   CURRENT   READY   AGE     LABELS
+nginx-676b4cfdcf   0         0         0       9m43s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-6bd4ccf6c4   5         5         5       3m41s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-879556f79    5         5         5       114s    app=nginx,pod-template-hash=879556f79,ver=1.22
+
+[jegan@tektutor.org declartive-manifests]$ oc edit po nginx-879556f79-vwmw5
+Edit cancelled, no changes made.
+</pre>
