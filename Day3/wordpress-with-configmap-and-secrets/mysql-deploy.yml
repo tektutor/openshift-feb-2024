@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc-jegan # Replace 'jegan' with your name
+
+      containers:
+      - name: mysql
+        image: bitnami/mariadb:latest
+
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /bitnami/mariadb/data
+
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: root@123
+
+        - name: MARIADB_DATABASE
+          value: wordpress
