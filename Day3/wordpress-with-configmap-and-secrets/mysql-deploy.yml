@@ -30,7 +30,13 @@ spec:
 
         env:
         - name: MARIADB_ROOT_PASSWORD
-          value: root@123
+          valueFrom:
+            secretKeyRef:
+              name: wordpress-secrets
+              key: password
 
         - name: MARIADB_DATABASE
-          value: wordpress
+          valueFrom:
+            configMapKeyRef:
+              name: wordpress-cm
+              key: database
