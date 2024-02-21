@@ -237,3 +237,21 @@ devops-training      19s
 openshift-training   12s  
 </pre>
 
+## Lab - Deploying a application that uses external storage ( Persistent Volume and Persistent Volume Claims )
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/persistent-volume
+
+oc apply -f mariadb-pv.yml
+oc apply -f mariadb-pvc.yml
+oc apply -f mariadb-deploy.yml
+
+oc get pv,pvc,deploy
+oc get po
+```
+
+Expected output
+<pre>
+
+</pre>
