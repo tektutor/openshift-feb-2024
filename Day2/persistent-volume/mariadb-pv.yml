@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mariadb-pv-jegan # Replace 'jegan' with your name
+  labels:
+    name: jegan # Replace 'jegan' with your name
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+  - ReadWriteOnce # All the Pods from the same Node can only access this PV
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.1.127 # Replace this IP with your Server IP 10.10.15.61 or 10.10.15.62 or 10.10.15.63 
+                          # depending on which server you are connected 
+    path: /var/nfs/jegan/mariadb # Replace this path with /var/nfs/user01/share1 folder
