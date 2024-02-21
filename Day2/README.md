@@ -197,4 +197,43 @@ Commercial support is available at
 Greetings from Spring Boot!
 ```
 
+## Lab - Creating a new type of Custom Resource by defining a Custom Resource Definition (CRD)
+```
+cd ~/
+cd openshift-feb-2024
+git pull
+cd Day2/crd
+oc get trainings
+oc get training
+oc get train
+oc apply -f training-crd.yml
+oc get crds
+oc get trainings
+oc get training
+oc get train
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org crd]$ ls
+devops-training.yml  openshift-training.yml  training-crd.yml
+[jegan@tektutor.org crd]$ oc apply -f training-crd.yml 
+customresourcedefinition.apiextensions.k8s.io/trainings.tektutor.org created
+[jegan@tektutor.org crd]$ oc apply -f devops-training.yml 
+training.tektutor.org/devops-training created
+[jegan@tektutor.org crd]$ oc apply -f openshift-training.yml 
+training.tektutor.org/openshift-training created
+[jegan@tektutor.org crd]$ oc get trainings
+NAME                 AGE
+devops-training      12s
+openshift-training   5s
+[jegan@tektutor.org crd]$ oc get training
+NAME                 AGE
+devops-training      16s
+openshift-training   9s
+[jegan@tektutor.org crd]$ oc get train
+NAME                 AGE
+devops-training      19s
+openshift-training   12s  
+</pre>
 
