@@ -517,3 +517,90 @@ Events:
   Normal  IPAllocated   12s   metallb-controller  Assigned IP ["192.168.122.20"]
   Normal  nodeAssigned  12s   metallb-speaker     announcing from node "master-2.ocp4.training.tektutor" with protocol "layer2"  
 </pre>
+
+
+## Lab - Creating a pod in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/delclarative-manifests
+
+oc get po
+oc get pod nginx-bb865dc5f-4v2bl -o yaml > pod.yml
+
+oc apply -f pod.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running   0          20m
+nginx-bb865dc5f-cn2fd   1/1     Running   0          20m
+nginx-bb865dc5f-gnbjp   1/1     Running   0          18m
+nginx-bb865dc5f-jxmc5   1/1     Running   0          20m
+nginx-bb865dc5f-w4ldp   1/1     Running   0          18m
+[jegan@tektutor.org declartive-manifests]$ oc get po nginx-bb865dc5f-4v2bl -o yaml > pod.yml
+[jegan@tektutor.org declartive-manifests]$ vim pod.yml 
+  
+[jegan@tektutor.org declartive-manifests]$ ls
+  
+nginx-clusterip-svc.yml  nginx-deploy.yml  nginx-lb-svc.yml  nginx-nodeport-svc.yml  nginx-rs.yml  pod.yml
+[jegan@tektutor.org declartive-manifests]$ oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/nginx-bb865dc5f-4v2bl   1/1     Running   0          22m
+pod/nginx-bb865dc5f-cn2fd   1/1     Running   0          22m
+pod/nginx-bb865dc5f-gnbjp   1/1     Running   0          20m
+pod/nginx-bb865dc5f-jxmc5   1/1     Running   0          22m
+pod/nginx-bb865dc5f-w4ldp   1/1     Running   0          20m
+
+NAME            TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+service/nginx   LoadBalancer   172.30.164.239   192.168.122.20   8080:30143/TCP   4m49s
+
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   5/5     5            5           22m
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   5         5         5       22m
+  
+[jegan@tektutor.org declartive-manifests]$ oc delete deploy/nginx svc/nginx
+deployment.apps "nginx" deleted
+service "nginx" deleted
+  
+[jegan@tektutor.org declartive-manifests]$ oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+No resources found in jegan namespace.
+[jegan@tektutor.org declartive-manifests]$ ls -l
+total 24
+-rw-r--r--. 1 jegan jegan 245 Feb 21 15:13 nginx-clusterip-svc.yml
+-rw-r--r--. 1 jegan jegan 295 Feb 21 15:08 nginx-deploy.yml
+-rw-r--r--. 1 jegan jegan 248 Feb 21 15:17 nginx-lb-svc.yml
+-rw-r--r--. 1 jegan jegan 244 Feb 21 15:17 nginx-nodeport-svc.yml
+-rw-r--r--. 1 jegan jegan 385 Feb 21 15:27 nginx-rs.yml
+-rw-r--r--. 1 jegan jegan 146 Feb 21 15:28 pod.yml
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-rs.yml 
+replicaset.apps/nginx-rs created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get deploy
+No resources found in jegan namespace.
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs
+NAME       DESIRED   CURRENT   READY   AGE
+nginx-rs   3         3         3       7s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME             READY   STATUS    RESTARTS   AGE
+nginx-rs-5hfk5   1/1     Running   0          12s
+nginx-rs-qkrc9   1/1     Running   0          12s
+nginx-rs-r246m   1/1     Running   0          12s
+  
+[jegan@tektutor.org declartive-manifests]$ oc delete pod/nginx-rs-5hfk5
+pod "nginx-rs-5hfk5" deleted
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME             READY   STATUS              RESTARTS   AGE
+nginx-rs-prjgq   0/1     ContainerCreating   0          3s
+nginx-rs-qkrc9   1/1     Running             0          95s
+nginx-rs-r246m   1/1     Running             0          95s  
+</pre>
