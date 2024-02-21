@@ -266,6 +266,8 @@ oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=c
 oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o json
 
 oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml > nginx-deploy.yml
+
+oc apply -f nginx-deploy.yml
 ```
 
 Expected output
@@ -295,4 +297,34 @@ spec:
         name: nginx
         resources: {}
 status: {}
+
+[jegan@tektutor.org declartive-manifests]$ ls
+nginx-deploy.yml
+  
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get deploy,rs,po
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   0/3     3            0           7s
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   3         3         0       7s
+
+NAME                        READY   STATUS              RESTARTS   AGE
+pod/nginx-bb865dc5f-4v2bl   0/1     ContainerCreating   0          7s
+pod/nginx-bb865dc5f-cn2fd   0/1     ContainerCreating   0          7s
+pod/nginx-bb865dc5f-jxmc5   0/1     ContainerCreating   0          7s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS              RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running             0          15s
+nginx-bb865dc5f-cn2fd   0/1     ContainerCreating   0          15s
+nginx-bb865dc5f-jxmc5   0/1     ContainerCreating   0          15s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running   0          18s
+nginx-bb865dc5f-cn2fd   1/1     Running   0          18s
+nginx-bb865dc5f-jxmc5   1/1     Running   0          18s
 </pre>
