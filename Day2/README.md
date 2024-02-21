@@ -380,10 +380,10 @@ Expected output
 [jegan@tektutor.org declartive-manifests]$ ls
 nginx-deploy.yml
   
-[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=ClusterIP --port=8080 --dry-run=client -o yaml > nginx-svc.yml
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=ClusterIP --port=8080 --dry-run=client -o yaml > nginx-clusterip-svc.yml
   
-[jegan@tektutor.org declartive-manifests]$ vim nginx-svc.yml 
-[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-svc.yml 
+[jegan@tektutor.org declartive-manifests]$ vim nginx-clusterip-svc.yml 
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-clusterip-svc.yml 
 service/nginx created
   
 [jegan@tektutor.org declartive-manifests]$ oc get svc
@@ -413,11 +413,43 @@ Events:            <none>
 cd ~/openshift-feb-2024
 git pull
 cd Day2/declarative-manifests
-oc delete -f nginx-svc.yml
+oc delete -f nginx-clusterip-svc.yml
 ```
 
 Expected output
 <pre>
-[jegan@tektutor.org declartive-manifests]$ oc delete -f nginx-svc.yml 
+[jegan@tektutor.org declartive-manifests]$ oc delete -f nginx-clusterip-svc.yml 
 service "nginx" deleted  
+</pre>
+
+## Lab - Creating an external nodeport service in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+oc delete -f nginx-cluster-svc.yml
+
+oc expose deploy/nginx --type=NodePort --port=8080 --dry-run=client -o yaml > nginx-nodeport-svc.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=NodePort --port=8080 --dry-run=client -o yaml > nginx-nodeport-svc.yml  
+</pre>
+
+## Lab - Creating an external loadbalancer service in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+oc expose deploy/nginx --type=LoadBalancer --port=8080 --dry-run=client -o yaml > nginx-lb-svc.yml
+
+oc delete -f nginx-nodeport-svc.yml
+
+oc apply -f nginx-lb-svc.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=LoadBalancer --port=8080 --dry-run=client -o yaml > nginx-lb-svc.yml  
 </pre>
