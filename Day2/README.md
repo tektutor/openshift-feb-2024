@@ -252,6 +252,10 @@ oc get po
 ```
 
 Expected output
-<pre>
-
-</pre>
+![Mariadb](mariadb-1.png)
+![Mariadb](mariadb-2.png)
+![Mariadb](mariadb-3.png)
+![Mariadb](mariadb-4.png)
+![Mariadb](mariadb-5.png)
+![Mariadb](mariadb-6.png)
+![Mariadb](mariadb-7.png)
