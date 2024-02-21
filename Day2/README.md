@@ -197,4 +197,259 @@ Commercial support is available at
 Greetings from Spring Boot!
 ```
 
+## Lab - Creating a new type of Custom Resource by defining a Custom Resource Definition (CRD)
+```
+cd ~/
+cd openshift-feb-2024
+git pull
+cd Day2/crd
+oc get trainings
+oc get training
+oc get train
+oc apply -f training-crd.yml
+oc get crds
+oc get trainings
+oc get training
+oc get train
+```
 
+Expected output
+<pre>
+[jegan@tektutor.org crd]$ ls
+devops-training.yml  openshift-training.yml  training-crd.yml
+[jegan@tektutor.org crd]$ oc apply -f training-crd.yml 
+customresourcedefinition.apiextensions.k8s.io/trainings.tektutor.org created
+[jegan@tektutor.org crd]$ oc apply -f devops-training.yml 
+training.tektutor.org/devops-training created
+[jegan@tektutor.org crd]$ oc apply -f openshift-training.yml 
+training.tektutor.org/openshift-training created
+[jegan@tektutor.org crd]$ oc get trainings
+NAME                 AGE
+devops-training      12s
+openshift-training   5s
+[jegan@tektutor.org crd]$ oc get training
+NAME                 AGE
+devops-training      16s
+openshift-training   9s
+[jegan@tektutor.org crd]$ oc get train
+NAME                 AGE
+devops-training      19s
+openshift-training   12s  
+</pre>
+
+## Lab - Deploying a application that uses external storage ( Persistent Volume and Persistent Volume Claims )
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/persistent-volume
+
+oc apply -f mariadb-pv.yml
+oc apply -f mariadb-pvc.yml
+oc apply -f mariadb-deploy.yml
+
+oc get pv,pvc,deploy
+oc get po
+```
+
+Expected output
+![Mariadb](mariadb-1.png)
+![Mariadb](mariadb-2.png)
+![Mariadb](mariadb-3.png)
+![Mariadb](mariadb-4.png)
+![Mariadb](mariadb-5.png)
+![Mariadb](mariadb-6.png)
+![Mariadb](mariadb-7.png)
+
+## Lab - Creating nginx deployment in declarative style
+```
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o json
+
+oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml > nginx-deploy.yml
+
+oc apply -f nginx-deploy.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc create deployment nginx --image=bitnami/nginx:latest --replicas=3 --dry-run=client -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: bitnami/nginx:latest
+        name: nginx
+        resources: {}
+status: {}
+
+[jegan@tektutor.org declartive-manifests]$ ls
+nginx-deploy.yml
+  
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get deploy,rs,po
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   0/3     3            0           7s
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   3         3         0       7s
+
+NAME                        READY   STATUS              RESTARTS   AGE
+pod/nginx-bb865dc5f-4v2bl   0/1     ContainerCreating   0          7s
+pod/nginx-bb865dc5f-cn2fd   0/1     ContainerCreating   0          7s
+pod/nginx-bb865dc5f-jxmc5   0/1     ContainerCreating   0          7s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS              RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running             0          15s
+nginx-bb865dc5f-cn2fd   0/1     ContainerCreating   0          15s
+nginx-bb865dc5f-jxmc5   0/1     ContainerCreating   0          15s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running   0          18s
+nginx-bb865dc5f-cn2fd   1/1     Running   0          18s
+nginx-bb865dc5f-jxmc5   1/1     Running   0          18s
+</pre>
+
+## Lab - Scale up/down a deployment in declarative style
+
+Edit the replicas count in the nginx-deploy.yml and apply the changes
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+vim nginx-deploy.yml
+oc apply -f nginx-deploy.yml
+oc get po -w
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ vim nginx-deploy.yml 
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx configured
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po -w
+NAME                    READY   STATUS              RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running             0          2m1s
+nginx-bb865dc5f-cn2fd   1/1     Running             0          2m1s
+nginx-bb865dc5f-gnbjp   0/1     ContainerCreating   0          4s
+nginx-bb865dc5f-jxmc5   1/1     Running             0          2m1s
+nginx-bb865dc5f-w4ldp   0/1     ContainerCreating   0          4s
+nginx-bb865dc5f-w4ldp   1/1     Running             0          14s
+nginx-bb865dc5f-gnbjp   1/1     Running             0          14s
+  
+^C[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running   0          2m17s
+nginx-bb865dc5f-cn2fd   1/1     Running   0          2m17s
+nginx-bb865dc5f-gnbjp   1/1     Running   0          20s
+nginx-bb865dc5f-jxmc5   1/1     Running   0          2m17s
+nginx-bb865dc5f-w4ldp   1/1     Running   0          20s  
+</pre>
+
+## Lab - Creating a ClusterIP internal service in declarative style
+```
+oc expose deploy/nginx --type=ClusterIP --port=8080 --dry-run=client -o yaml > nginx-svc.yml
+oc apply -f nginx-svc.yml
+
+oc get svc
+oc describe svc/nginx
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ ls
+nginx-deploy.yml
+  
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=ClusterIP --port=8080 --dry-run=client -o yaml > nginx-clusterip-svc.yml
+  
+[jegan@tektutor.org declartive-manifests]$ vim nginx-clusterip-svc.yml 
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-clusterip-svc.yml 
+service/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get svc
+NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+nginx   ClusterIP   172.30.89.193   <none>        8080/TCP   2s
+  
+[jegan@tektutor.org declartive-manifests]$ oc describe svc/nginx
+Name:              nginx
+Namespace:         jegan
+Labels:            app=nginx
+Annotations:       <none>
+Selector:          app=nginx
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                172.30.89.193
+IPs:               172.30.89.193
+Port:              <unset>  8080/TCP
+TargetPort:        8080/TCP
+Endpoints:         10.128.0.218:8080,10.128.2.61:8080,10.129.0.229:8080 + 2 more...
+Session Affinity:  None
+Events:            <none>  
+</pre>
+
+## Lab - Deleting service or any openshift resource in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+oc delete -f nginx-clusterip-svc.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc delete -f nginx-clusterip-svc.yml 
+service "nginx" deleted  
+</pre>
+
+## Lab - Creating an external nodeport service in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+oc delete -f nginx-cluster-svc.yml
+
+oc expose deploy/nginx --type=NodePort --port=8080 --dry-run=client -o yaml > nginx-nodeport-svc.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=NodePort --port=8080 --dry-run=client -o yaml > nginx-nodeport-svc.yml  
+</pre>
+
+## Lab - Creating an external loadbalancer service in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/declarative-manifests
+oc expose deploy/nginx --type=LoadBalancer --port=8080 --dry-run=client -o yaml > nginx-lb-svc.yml
+
+oc delete -f nginx-nodeport-svc.yml
+
+oc apply -f nginx-lb-svc.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=LoadBalancer --port=8080 --dry-run=client -o yaml > nginx-lb-svc.yml  
+</pre>
