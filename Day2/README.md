@@ -485,4 +485,35 @@ oc apply -f nginx-lb-svc.yml
 Expected output
 <pre>
 [jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=LoadBalancer --port=8080 --dry-run=client -o yaml > nginx-lb-svc.yml  
+
+jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-lb-svc.yml 
+service/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get svc
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+nginx   LoadBalancer   172.30.164.239   192.168.122.20   8080:30143/TCP   2s
+  
+[jegan@tektutor.org declartive-manifests]$ oc describe svc/nginx
+Name:                     nginx
+Namespace:                jegan
+Labels:                   app=nginx
+Annotations:              metallb.universe.tf/ip-allocated-from-pool: tektutor-metallb-addresspool
+Selector:                 app=nginx
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       172.30.164.239
+IPs:                      172.30.164.239
+LoadBalancer Ingress:     192.168.122.20
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  30143/TCP
+Endpoints:                10.128.0.218:8080,10.128.2.61:8080,10.129.0.229:8080 + 2 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:
+  Type    Reason        Age   From                Message
+  ----    ------        ----  ----                -------
+  Normal  IPAllocated   12s   metallb-controller  Assigned IP ["192.168.122.20"]
+  Normal  nodeAssigned  12s   metallb-speaker     announcing from node "master-2.ocp4.training.tektutor" with protocol "layer2"  
 </pre>
