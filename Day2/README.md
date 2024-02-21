@@ -435,6 +435,39 @@ oc expose deploy/nginx --type=NodePort --port=8080 --dry-run=client -o yaml > ng
 Expected output
 <pre>
 [jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=NodePort --port=8080 --dry-run=client -o yaml > nginx-nodeport-svc.yml  
+
+[jegan@tektutor.org openshift-feb-2024]$ cd Day2/declartive-manifests/
+[jegan@tektutor.org declartive-manifests]$ ls
+nginx-clusterip-svc.yml  nginx-deploy.yml  nginx-lb-svc.yml  nginx-nodeport-svc.yml
+  
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx unchanged
+  
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-nodeport-svc.yml 
+service/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get svc
+NAME    TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+nginx   NodePort   172.30.34.31   <none>        8080:30185/TCP   3s
+  
+[jegan@tektutor.org declartive-manifests]$ oc describe svc/nginx
+Name:                     nginx
+Namespace:                jegan
+Labels:                   app=nginx
+Annotations:              <none>
+Selector:                 app=nginx
+Type:                     NodePort
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       172.30.34.31
+IPs:                      172.30.34.31
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  30185/TCP
+Endpoints:                10.128.0.218:8080,10.128.2.61:8080,10.129.0.229:8080 + 2 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
 </pre>
 
 ## Lab - Creating an external loadbalancer service in declarative style
@@ -452,4 +485,242 @@ oc apply -f nginx-lb-svc.yml
 Expected output
 <pre>
 [jegan@tektutor.org declartive-manifests]$ oc expose deploy/nginx --type=LoadBalancer --port=8080 --dry-run=client -o yaml > nginx-lb-svc.yml  
+
+jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-lb-svc.yml 
+service/nginx created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get svc
+NAME    TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+nginx   LoadBalancer   172.30.164.239   192.168.122.20   8080:30143/TCP   2s
+  
+[jegan@tektutor.org declartive-manifests]$ oc describe svc/nginx
+Name:                     nginx
+Namespace:                jegan
+Labels:                   app=nginx
+Annotations:              metallb.universe.tf/ip-allocated-from-pool: tektutor-metallb-addresspool
+Selector:                 app=nginx
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       172.30.164.239
+IPs:                      172.30.164.239
+LoadBalancer Ingress:     192.168.122.20
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  30143/TCP
+Endpoints:                10.128.0.218:8080,10.128.2.61:8080,10.129.0.229:8080 + 2 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:
+  Type    Reason        Age   From                Message
+  ----    ------        ----  ----                -------
+  Normal  IPAllocated   12s   metallb-controller  Assigned IP ["192.168.122.20"]
+  Normal  nodeAssigned  12s   metallb-speaker     announcing from node "master-2.ocp4.training.tektutor" with protocol "layer2"  
+</pre>
+
+
+## Lab - Creating a pod in declarative style
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day2/delclarative-manifests
+
+oc get po
+oc get pod nginx-bb865dc5f-4v2bl -o yaml > pod.yml
+
+oc apply -f pod.yml
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                    READY   STATUS    RESTARTS   AGE
+nginx-bb865dc5f-4v2bl   1/1     Running   0          20m
+nginx-bb865dc5f-cn2fd   1/1     Running   0          20m
+nginx-bb865dc5f-gnbjp   1/1     Running   0          18m
+nginx-bb865dc5f-jxmc5   1/1     Running   0          20m
+nginx-bb865dc5f-w4ldp   1/1     Running   0          18m
+[jegan@tektutor.org declartive-manifests]$ oc get po nginx-bb865dc5f-4v2bl -o yaml > pod.yml
+[jegan@tektutor.org declartive-manifests]$ vim pod.yml 
+  
+[jegan@tektutor.org declartive-manifests]$ ls
+  
+nginx-clusterip-svc.yml  nginx-deploy.yml  nginx-lb-svc.yml  nginx-nodeport-svc.yml  nginx-rs.yml  pod.yml
+[jegan@tektutor.org declartive-manifests]$ oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+NAME                        READY   STATUS    RESTARTS   AGE
+pod/nginx-bb865dc5f-4v2bl   1/1     Running   0          22m
+pod/nginx-bb865dc5f-cn2fd   1/1     Running   0          22m
+pod/nginx-bb865dc5f-gnbjp   1/1     Running   0          20m
+pod/nginx-bb865dc5f-jxmc5   1/1     Running   0          22m
+pod/nginx-bb865dc5f-w4ldp   1/1     Running   0          20m
+
+NAME            TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+service/nginx   LoadBalancer   172.30.164.239   192.168.122.20   8080:30143/TCP   4m49s
+
+NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx   5/5     5            5           22m
+
+NAME                              DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-bb865dc5f   5         5         5       22m
+  
+[jegan@tektutor.org declartive-manifests]$ oc delete deploy/nginx svc/nginx
+deployment.apps "nginx" deleted
+service "nginx" deleted
+  
+[jegan@tektutor.org declartive-manifests]$ oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+No resources found in jegan namespace.
+[jegan@tektutor.org declartive-manifests]$ ls -l
+total 24
+-rw-r--r--. 1 jegan jegan 245 Feb 21 15:13 nginx-clusterip-svc.yml
+-rw-r--r--. 1 jegan jegan 295 Feb 21 15:08 nginx-deploy.yml
+-rw-r--r--. 1 jegan jegan 248 Feb 21 15:17 nginx-lb-svc.yml
+-rw-r--r--. 1 jegan jegan 244 Feb 21 15:17 nginx-nodeport-svc.yml
+-rw-r--r--. 1 jegan jegan 385 Feb 21 15:27 nginx-rs.yml
+-rw-r--r--. 1 jegan jegan 146 Feb 21 15:28 pod.yml
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-rs.yml 
+replicaset.apps/nginx-rs created
+  
+[jegan@tektutor.org declartive-manifests]$ oc get deploy
+No resources found in jegan namespace.
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs
+NAME       DESIRED   CURRENT   READY   AGE
+nginx-rs   3         3         3       7s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME             READY   STATUS    RESTARTS   AGE
+nginx-rs-5hfk5   1/1     Running   0          12s
+nginx-rs-qkrc9   1/1     Running   0          12s
+nginx-rs-r246m   1/1     Running   0          12s
+  
+[jegan@tektutor.org declartive-manifests]$ oc delete pod/nginx-rs-5hfk5
+pod "nginx-rs-5hfk5" deleted
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME             READY   STATUS              RESTARTS   AGE
+nginx-rs-prjgq   0/1     ContainerCreating   0          3s
+nginx-rs-qkrc9   1/1     Running             0          95s
+nginx-rs-r246m   1/1     Running             0          95s  
+</pre>
+
+## Lab - Rolling update in declarative style
+<pre>
+[jegan@tektutor.org declartive-manifests]$ oc get deploy --show-labels
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE     LABELS
+nginx   5/5     5            5           4m11s   app=nginx,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs --show-labels
+NAME               DESIRED   CURRENT   READY   AGE     LABELS
+nginx-676b4cfdcf   5         5         5       4m17s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po --show-labels
+NAME                     READY   STATUS    RESTARTS   AGE     LABELS
+nginx-676b4cfdcf-28965   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-6sv7w   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-7k627   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-wqk6n   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-676b4cfdcf-zc77r   1/1     Running   0          4m21s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ vim nginx-deploy.yml 
+  
+[jegan@tektutor.org declartive-manifests]$ oc apply -f nginx-deploy.yml 
+deployment.apps/nginx configured
+  
+[jegan@tektutor.org declartive-manifests]$ oc get deploy --show-labels
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE     LABELS
+nginx   5/5     5            5           6m10s   app=nginx,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc label deploy nginx ver=1.23 --overwrite
+deployment.apps/nginx labeled
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-676b4cfdcf   0         0         0       7m20s
+nginx-6bd4ccf6c4   5         5         5       78s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs --show-labels
+NAME               DESIRED   CURRENT   READY   AGE     LABELS
+nginx-676b4cfdcf   0         0         0       7m26s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-6bd4ccf6c4   5         5         5       84s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+  
+[jegan@tektutor.org declartive-manifests]$ oc label rs nginx-6bd4ccf6c4 ver=1.23 --overwrite
+replicaset.apps/nginx-6bd4ccf6c4 labeled
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-6bd4ccf6c4-6x6z5   1/1     Running   0          111s
+nginx-6bd4ccf6c4-d9bxd   1/1     Running   0          111s
+nginx-6bd4ccf6c4-dblxm   1/1     Running   0          111s
+nginx-6bd4ccf6c4-h48pg   1/1     Running   0          108s
+nginx-6bd4ccf6c4-hxh5v   1/1     Running   0          108s
+nginx-879556f79-9wq75    1/1     Running   0          4s
+nginx-879556f79-c82jk    1/1     Running   0          4s
+nginx-879556f79-h5xpc    1/1     Running   0          4s
+nginx-879556f79-hxv8j    1/1     Running   0          4s
+nginx-879556f79-vwmw5    1/1     Running   0          4s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po --show-labels
+NAME                     READY   STATUS    RESTARTS   AGE     LABELS
+nginx-6bd4ccf6c4-6x6z5   1/1     Running   0          2m11s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-d9bxd   1/1     Running   0          2m11s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-dblxm   1/1     Running   0          2m11s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-h48pg   1/1     Running   0          2m8s    app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-hxh5v   1/1     Running   0          2m8s    app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-879556f79-9wq75    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-c82jk    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-h5xpc    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-hxv8j    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-vwmw5    1/1     Running   0          24s     app=nginx,pod-template-hash=879556f79,ver=1.22
+
+[jegan@tektutor.org declartive-manifests]$ oc label po -l app=nginx ver=1.23 --overwrite
+pod/nginx-6bd4ccf6c4-6x6z5 labeled
+pod/nginx-6bd4ccf6c4-d9bxd labeled
+pod/nginx-6bd4ccf6c4-dblxm labeled
+pod/nginx-6bd4ccf6c4-h48pg labeled
+pod/nginx-6bd4ccf6c4-hxh5v labeled
+pod/nginx-879556f79-9wq75 labeled
+pod/nginx-879556f79-c82jk labeled
+pod/nginx-879556f79-h5xpc labeled
+pod/nginx-879556f79-hxv8j labeled
+pod/nginx-879556f79-vwmw5 labeled
+  
+[jegan@tektutor.org declartive-manifests]$ oc get po --show-labels
+NAME                     READY   STATUS    RESTARTS   AGE     LABELS
+nginx-6bd4ccf6c4-6x6z5   1/1     Running   0          2m50s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-8cb9v   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-cmrk2   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-d9bxd   1/1     Running   0          2m50s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-dblxm   1/1     Running   0          2m50s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-h48pg   1/1     Running   0          2m47s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-hxh5v   1/1     Running   0          2m47s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-6bd4ccf6c4-m8pwp   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-s58xt   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-6bd4ccf6c4-wgf57   1/1     Running   0          10s     app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.22
+nginx-879556f79-7m2rj    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-9wq75    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-c82jk    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-gk58h    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-h5xpc    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-hxv8j    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+nginx-879556f79-l8tk8    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-lsgw5    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-rmg68    1/1     Running   0          10s     app=nginx,pod-template-hash=879556f79,ver=1.22
+nginx-879556f79-vwmw5    1/1     Running   0          63s     app=nginx,pod-template-hash=879556f79,ver=1.23
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-676b4cfdcf   0         0         0       9m12s
+nginx-6bd4ccf6c4   5         5         5       3m10s
+nginx-879556f79    5         5         5       83s
+  
+[jegan@tektutor.org declartive-manifests]$ oc get rs --show-labels
+NAME               DESIRED   CURRENT   READY   AGE     LABELS
+nginx-676b4cfdcf   0         0         0       9m43s   app=nginx,pod-template-hash=676b4cfdcf,ver=1.22
+nginx-6bd4ccf6c4   5         5         5       3m41s   app=nginx,pod-template-hash=6bd4ccf6c4,ver=1.23
+nginx-879556f79    5         5         5       114s    app=nginx,pod-template-hash=879556f79,ver=1.22
+
+[jegan@tektutor.org declartive-manifests]$ oc edit po nginx-879556f79-vwmw5
+Edit cancelled, no changes made.
 </pre>
