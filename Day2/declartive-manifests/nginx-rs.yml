@@ -1,27 +1,22 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: ReplicaSet
 metadata:
-  name: nginx
   labels:
     app: nginx
-    ver: "1.22"
+    pod-template-hash: rs 
+  name: nginx-rs
 spec:
-  replicas: 5
-
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
-      ver: "1.22"
-
-  name: nginx
-
+      pod-template-hash: rs 
   template:
     metadata:
       labels:
         app: nginx
-        ver: "1.22"
-
+        pod-template-hash: rs 
     spec:
       containers:
-      - image: bitnami/nginx:1.23
+      - image: bitnami/nginx:latest
         name: nginx
