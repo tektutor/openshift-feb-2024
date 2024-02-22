@@ -234,6 +234,8 @@ e1b4843e90128       quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac59d6
 cbdf81deaa10b       cd08464f8e6e5145736152e423985a40b51dad242b9f407192fe76ff64d737a6                                                         23 minutes ago      Running             wordpress                            0                   62e243d3ab13d       wordpress-658fc8c5b9-2mqwr  
 </pre>
 
+## 
+
 ## Deploying Wordpress and MySql multi-pod application
 ```
 cd ~/openshift-feb-2024
