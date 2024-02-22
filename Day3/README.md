@@ -441,3 +441,25 @@ tektutor> db.movies.find( { title: "The Favourite" } )
 tektutor> 
 ```
 
+## Lab - Creating a custom helm chart for our wordpress and mysql multipod application that uses configmap and secrets
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day3/helm
+helm create wordpress
+cd wordpress/templates
+rm -rf *
+cd ../..
+cp wp/* wordpress/templates
+
+helm package wordpress
+
+helm install wordpress wordpress-0.1.0.tgz
+helm list
+```
+
+Expected output
+<pre>
+  
+</pre>
+
