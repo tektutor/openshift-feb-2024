@@ -35,6 +35,10 @@ oc get svc
 oc expose svc/spring-ms 
 ```
 
+![image](https://github.com/tektutor/openshift-nov-2023/assets/12674043/372969d5-26f3-47e6-b444-4918cbabe6a3)
+![image](https://github.com/tektutor/openshift-nov-2023/assets/12674043/5b745b1f-54aa-42d1-8778-a742916a4605)
+![image](https://github.com/tektutor/openshift-nov-2023/assets/12674043/d7d4da56-f9d5-4b64-bba1-4f9fcb34e7fe)
+
 ## Lab - Securing our application with edge route (https)
 
 Upgrading the openssl in CentOS
