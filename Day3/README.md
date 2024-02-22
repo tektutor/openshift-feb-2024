@@ -321,7 +321,7 @@ export MONGODB_REPLICA_SET_KEY=root@123
 
 helm install mongodb bitnami/mongodb --set podSecurityContext.fsGroup="",containerSecurityContext.runAsUser="1001080001",podSecurityContext.enabled=false,architecture=replicaset,auth.replicaSetKey=$MONGODB_REPLICA_SET_KEY,auth.rootPassword=$MONGODB_ROOT_PASSWORD
 
-export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace ksingh mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 --decode)
+export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace jegan mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 --decode)
 
 kubectl run --namespace ksingh mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:4.4.13-debian-10-r9 --command -- bash
 
