@@ -323,13 +323,13 @@ helm install mongodb bitnami/mongodb --set podSecurityContext.fsGroup="",contain
 
 export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace jegan mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 --decode)
 
-kubectl run --namespace ksingh mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:4.4.13-debian-10-r9 --command -- bash
+kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:4.4.13-debian-10-r9 --command -- bash
 
 ## Option-1 Using host addres
-mongo admin --host "mongodb-0.mongodb-headless.ksingh.svc.cluster.local:27017,mongodb-1.mongodb-headless.ksingh.svc.cluster.local:27017" --authenticationDatabase admin -u root -p $MONGODB_ROOT_PASSWORD
+mongo admin --host "mongodb-0.mongodb-headless.ksingh.svc.cluster.local:27017,mongodb-1.mongodb-headless.jegan.svc.cluster.local:27017" --authenticationDatabase admin -u root -p $MONGODB_ROOT_PASSWORD
 
 ## Option-2 Using MongoDB URI
-mongo "mongodb://mongodb-0.mongodb-headless.ksingh.svc.cluster.local:27017,mongodb-1.mongodb-headless.ksingh.svc.cluster.local:27017" --authenticationDatabase admin  -u root -p $MONGODB_ROOT_PASSWORD
+mongo "mongodb://mongodb-0.mongodb-headless.ksingh.svc.cluster.local:27017,mongodb-1.mongodb-headless.jegan.svc.cluster.local:27017" --authenticationDatabase admin  -u root -p $MONGODB_ROOT_PASSWORD
 
 use mydb
 
