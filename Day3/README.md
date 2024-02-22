@@ -316,11 +316,36 @@ version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93
 
 ## Lab - Deploying MongoDB into OpenShift
 
+Let's first deploy mongodb 
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day3/mongodb
+./create-all.sh
+```
+
 Let's create a mongodb client pod
 ```
 kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
 
 mongosh mongodb.jegan.svc.cluster.local -u root -p
+
+use tektutor
+
+db.movies.insertOne(
+  {
+    title: "The Favourite",
+    genres: [ "Drama", "History" ],
+    runtime: 121,
+    rated: "R",
+    year: 2018,
+    directors: [ "Yorgos Lanthimos" ],
+    cast: [ "Olivia Colman", "Emma Stone", "Rachel Weisz" ],
+    type: "movie"
+  }
+)
+
+db.movies.find( { title: "The Favourite" } )
 ```
 
 Expected output
@@ -359,10 +384,40 @@ You can opt-out by running the disableTelemetry() command.
    2024-02-22T05:39:33.595+00:00: vm.max_map_count is too low
 ------
 
-test> 
-```
+test>
 
-
-
+test> use tektutor
+switched to db tektutor
+tektutor> db.movies.insertOne(
+...   {
+...     title: "The Favourite",
+...     genres: [ "Drama", "History" ],
+...     runtime: 121,
+...     rated: "R",
+...     year: 2018,
+...     directors: [ "Yorgos Lanthimos" ],
+...     cast: [ "Olivia Colman", "Emma Stone", "Rachel Weisz" ],
+...     type: "movie"
+...   }
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId('65d6edbd48cd6e041aa5117a')
+}
+tektutor> db.movies.find( { title: "The Favourite" } )
+[
+  {
+    _id: ObjectId('65d6edbd48cd6e041aa5117a'),
+    title: 'The Favourite',
+    genres: [ 'Drama', 'History' ],
+    runtime: 121,
+    rated: 'R',
+    year: 2018,
+    directors: [ 'Yorgos Lanthimos' ],
+    cast: [ 'Olivia Colman', 'Emma Stone', 'Rachel Weisz' ],
+    type: 'movie'
+  }
+]
+tektutor> 
 ```
 
