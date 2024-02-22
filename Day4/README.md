@@ -12,7 +12,7 @@ oc get route
 
 Expected output
 
-## Lab - Securing our application route with edge route (https)
+## Lab - Securing our application with edge route (https)
 
 Upgrading the openssl in CentOS
 https://webhostinggeeks.com/howto/install-update-openssl-centos/
