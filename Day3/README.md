@@ -291,6 +291,11 @@ cd Day3/wordpress
 ./delete-all.sh
 ```
 
+## What is Helm?
+- it is a Kubernetes/Openshift package manager
+- just like linux distributions has their own package managers to install/uninstall/upgrade softwares, Helm let's download and install openshift/kubernetes applications that comes as tar.gz file packaged in a specific a way called Charts.
+- Using the Helm charts we can install/uninstall/upgrade softwares deployed in Openshift or Kubernetes cluster
+
 ## Lab - Installing Helm in your RPS CentOS Lab Machine
 ```
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
