@@ -18,7 +18,7 @@ spec:
       volumes:
       - name: mysql-storage
         persistentVolumeClaim:
-          claimName: mysql-pvc-jegan # Replace 'jegan' with your name
+          claimName: {{ .Values.pvc.mysqlPVCName }} 
 
       containers:
       - name: mysql
