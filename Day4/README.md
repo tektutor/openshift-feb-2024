@@ -35,7 +35,7 @@ ln -s /usr/local/lib64/libcrypto.so.3 /usr/lib64/libcrypto.so.3
 openssl version
 ```
 
-Let's deployment a microservice and create an edge route as shown below
+Let's deploy a microservice and create an edge route as shown below
 ```
 openssl genrsa -out key.key
 openssl req -new -key key.key -out csr.csr -subj="/CN=hello-jegan.apps.ocp.tektutor-ocp-labs"
