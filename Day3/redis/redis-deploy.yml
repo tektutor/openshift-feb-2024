@@ -20,6 +20,7 @@ spec:
       containers:
       - name: redis
         image: bitnami/redis:latest
+        imagePullPolicy: IfNotPresent
 
         volumeMounts:
         - name: redis-storage

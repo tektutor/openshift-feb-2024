@@ -23,6 +23,7 @@ spec:
       containers:
       - name: mysql
         image: bitnami/mariadb:latest
+        imagePullPolicy: IfNotPresent
 
         volumeMounts:
         - name: mysql-storage

@@ -19,6 +19,7 @@ spec:
           claimName: wordpress-pvc-jegan # Replace 'jegan' with your name
       containers:
       - image: bitnami/wordpress:6.4.1
+        imagePullPolicy: IfNotPresent
         name: wordpress
 
         volumeMounts:

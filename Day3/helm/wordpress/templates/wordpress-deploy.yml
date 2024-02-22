@@ -19,6 +19,7 @@ spec:
           claimName: {{ .Values.pvc.wordpressPVCName }} 
       containers:
       - image: bitnami/wordpress:6.4.1
+        imagePullPolicy: IfNotPresent
         name: wordpress
 
         volumeMounts:
