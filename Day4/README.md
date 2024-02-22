@@ -12,6 +12,29 @@ oc get route
 
 Expected output
 
+## Lab - Building the application within OpenShift with source strategy using source code from GitHub url
+```
+oc new-app registry.access.redhat.com/ubi8/openjdk-11~https://github.com/tektutor/spring-ms.git --strategy=source
+```
+
+Expected output
+![image](https://github.com/tektutor/openshift-nov-2023/assets/12674043/e0b7ba66-9bd4-47e9-b6c5-314d129e82ae)
+
+Let's check the build status as shown below
+```
+oc logs -f buildconfig/spring-ms
+```
+Expected output
+![image](https://github.com/tektutor/openshift-nov-2023/assets/12674043/0905997e-8259-4fa4-8fa4-a5d00dff6618)
+![image](https://github.com/tektutor/openshift-nov-2023/assets/12674043/91720e4c-f791-4c70-8f81-711d2bb40d89)
+
+You may try listing the deployment
+```
+oc get deploy,rs,po
+oc get svc
+oc expose svc/spring-ms 
+```
+
 ## Lab - Securing our application with edge route (https)
 
 Upgrading the openssl in CentOS
