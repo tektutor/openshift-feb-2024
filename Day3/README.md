@@ -316,6 +316,14 @@ version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93
 
 ## Lab - Deploying MongoDB into OpenShift
 
+Let's first deploy mongodb 
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day3/mongodb
+./create-all.sh
+```
+
 Let's create a mongodb client pod
 ```
 kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
