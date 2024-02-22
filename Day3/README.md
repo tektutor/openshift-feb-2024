@@ -1,6 +1,9 @@
 # Day3
 
 ## Info - Troubleshooting NFS mount issues
+
+Reference - https://docs.openshift.com/container-platform/4.14/storage/persistent_storage/persistent-storage-nfs.html
+
 In case your Pods are unable to mount NFS shared folder, you need to enable nfs mounting within Openshift nodes as shown below
 
 ```
