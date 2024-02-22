@@ -441,3 +441,63 @@ tektutor> db.movies.find( { title: "The Favourite" } )
 tektutor> 
 ```
 
+## Lab - Creating a custom helm chart for our wordpress and mysql multipod application that uses configmap and secrets
+```
+cd ~/openshift-feb-2024
+git pull
+cd Day3/helm
+helm create wordpress
+cd wordpress/templates
+rm -rf *
+cd ../..
+cp wp/* wordpress/templates
+
+helm package wordpress
+
+helm install wordpress wordpress-0.1.0.tgz
+helm list
+```
+
+Expected output
+<pre>
+[jegan@tektutor.org Day3]$ cd helm/
+[jegan@tektutor.org helm]$ ls
+wp
+[jegan@tektutor.org helm]$ helm version
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/jegan/.kube/config
+version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}
+  
+[jegan@tektutor.org helm]$ helm list
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/jegan/.kube/config
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
+  
+[jegan@tektutor.org helm]$ oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+No resources found in jegan namespace.
+
+[jegan@tektutor.org helm]$ ls
+wp
+[jegan@tektutor.org helm]$ helm create wordpress
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/jegan/.kube/config
+Creating wordpress
+  
+[jegan@tektutor.org helm]$ tree wordpress
+wordpress
+├── charts
+├── Chart.yaml
+├── templates
+│   ├── deployment.yaml
+│   ├── _helpers.tpl
+│   ├── hpa.yaml
+│   ├── ingress.yaml
+│   ├── NOTES.txt
+│   ├── serviceaccount.yaml
+│   ├── service.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+
+3 directories, 10 files
+[jegan@tektutor.org helm]$   
+</pre>
+
