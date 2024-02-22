@@ -234,6 +234,8 @@ e1b4843e90128       quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac59d6
 cbdf81deaa10b       cd08464f8e6e5145736152e423985a40b51dad242b9f407192fe76ff64d737a6                                                         23 minutes ago      Running             wordpress                            0                   62e243d3ab13d       wordpress-658fc8c5b9-2mqwr  
 </pre>
 
+## 
+
 ## Deploying Wordpress and MySql multi-pod application
 ```
 cd ~/openshift-feb-2024
@@ -316,16 +318,49 @@ version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93
 
 Let's create a mongodb client pod
 ```
-kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
+kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
 
-mongosh admin --host "mongodb-0.mongodb-headless.jegan.svc.cluster.local:27017,mongodb-1.mongodb-headless.jegan.svc.cluster.local:27017" --authenticationDatabase admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD
+mongosh mongodb.jegan.svc.cluster.local -u root -p
 ```
 
 Expected output
-<pre>
+```
+[jegan@tektutor.org mongodb]$ kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
+Warning: would violate PodSecurity "restricted:v1.24": allowPrivilegeEscalation != false (container "mongodb-client" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "mongodb-client" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "mongodb-client" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "mongodb-client" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+If you don't see a command prompt, try pressing enter.
+
+1001@mongodb-client:/$ mongosh mongodb.jegan.svc.cluster.local -u admin -p
+Enter password: ********
+Current Mongosh Log ID:	65d6e9463e7a5c09894c82d8
+Connecting to:		mongodb://<credentials>@mongodb.jegan.svc.cluster.local:27017/?directConnection=true&appName=mongosh+2.1.5
+MongoServerError: Authentication failed.
+1001@mongodb-client:/$ mongosh tektutor@mongodb.jegan.svc.cluster.local -u admin -p
+MongoshInvalidInputError: [COMMON-10001] Invalid URI: tektutor@mongodb.jegan.svc.cluster.local
+1001@mongodb-client:/$ mongosh --host tektutor@mongodb.jegan.svc.cluster.local -u admin -p
+MongoshInvalidInputError: [COMMON-10001] The --host argument contains an invalid character: @
+1001@mongodb-client:/$ mongosh tektutor@mongodb.jegan.svc.cluster.local -u root -p
+MongoshInvalidInputError: [COMMON-10001] Invalid URI: tektutor@mongodb.jegan.svc.cluster.local
+1001@mongodb-client:/$ mongosh mongodb.jegan.svc.cluster.local -u root -p
+Enter password: ********
+Current Mongosh Log ID:	65d6ea1748cd6e041aa51179
+Connecting to:		mongodb://<credentials>@mongodb.jegan.svc.cluster.local:27017/?directConnection=true&appName=mongosh+2.1.5
+Using MongoDB:		7.0.5
+Using Mongosh:		2.1.5
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 
 
-</pre>
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+------
+   The server generated these startup warnings when booting
+   2024-02-22T05:39:33.595+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+   2024-02-22T05:39:33.595+00:00: vm.max_map_count is too low
+------
+
+test> 
+```
 
 
 
