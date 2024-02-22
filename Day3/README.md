@@ -326,7 +326,9 @@ cd Day3/mongodb
 
 Let's create a mongodb client pod
 ```
-kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:latest --command -- bash
+oc project jegan
+
+kubectl run mongodb-client --rm --tty -i --restart='Never' --image docker.io/bitnami/mongodb:latest --command -- bash
 
 mongosh mongodb.jegan.svc.cluster.local -u root -p
 
