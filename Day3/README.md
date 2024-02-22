@@ -499,5 +499,94 @@ wordpress
 
 3 directories, 10 files
 [jegan@tektutor.org helm]$   
+
+[jegan@tektutor.org helm]$ ls
+wordpress  wp
+[jegan@tektutor.org helm]$ cd wordpress/
+[jegan@tektutor.org wordpress]$ ls
+charts  Chart.yaml  templates  values.yaml
+[jegan@tektutor.org wordpress]$ cd templates/
+[jegan@tektutor.org templates]$ ls
+deployment.yaml  _helpers.tpl  hpa.yaml  ingress.yaml  NOTES.txt  serviceaccount.yaml  service.yaml  tests
+[jegan@tektutor.org templates]$ rm -rf *
+[jegan@tektutor.org templates]$ ls -l
+total 0
+[jegan@tektutor.org templates]$ cd ..
+[jegan@tektutor.org wordpress]$ ls
+charts  Chart.yaml  templates  values.yaml
+[jegan@tektutor.org wordpress]$ tree templates/
+templates/
+
+0 directories, 0 files
+[jegan@tektutor.org wordpress]$ vim Chart.yaml 
+[jegan@tektutor.org wordpress]$ cat Chart.yaml 
+apiVersion: v2
+name: wordpress
+description: A Helm chart for Kubernetes
+
+type: application
+version: 0.1.0
+appVersion: "1.16.0"  
+
+
+[jegan@tektutor.org helm]$ tree wordpress/
+wordpress/
+├── charts
+├── Chart.yaml
+├── templates
+└── values.yaml
+
+2 directories, 2 files
+[jegan@tektutor.org helm]$ ls
+wordpress  wp
+[jegan@tektutor.org helm]$ cp wp/* wordpress/templates/
+[jegan@tektutor.org helm]$ tree wordpress/
+wordpress/
+├── charts
+├── Chart.yaml
+├── templates
+│   ├── mysql-deploy.yml
+│   ├── mysql-pvc.yml
+│   ├── mysql-pv.yml
+│   ├── mysql-svc.yml
+│   ├── wordpress-cm.yml
+│   ├── wordpress-deploy.yml
+│   ├── wordpress-pvc.yml
+│   ├── wordpress-pv.yml
+│   ├── wordpress-route.yml
+│   ├── wordpress-secrets.yml
+│   └── wordpress-svc.yml
+└── values.yaml
+
+2 directories, 13 files
+
+[jegan@tektutor.org helm]$ ls
+wordpress  wordpress-0.1.0.tgz  wp
+[jegan@tektutor.org helm]$ cd wordpress/
+[jegan@tektutor.org wordpress]$ ls
+charts  Chart.yaml  templates  values.yaml
+[jegan@tektutor.org wordpress]$ cat values.yaml 
+image:
+  pullPolicy: IfNotPresent
+
+nfs:
+  serverIP: 192.168.1.127
+  mysqlNFSPath: "/var/nfs/jegan/mysql"
+  wordpressNFSPath: "/var/nfs/jegan/wordpress"
+
+yourProjectName: jegan
+
+pv:
+  mysqlPVName: "mysql-pv-jegan"
+  mysqlPVSize: 100Mi
+
+  wordpressPVName: "wordpress-pv-jegan"
+  wordpressPVSize: 100Mi
+
+pvc:
+  mysqlPVCName: "mysql-pvc-jegan"
+  wordpressPVCName: "wordpress-pvc-jegan"
+
+
 </pre>
 
