@@ -6,7 +6,7 @@ metadata:
     name: jegan # Replace 'jegan' with your name
 spec:
   capacity:
-    storage: 8Gi
+    storage: 100Mi
   accessModes:
   - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
