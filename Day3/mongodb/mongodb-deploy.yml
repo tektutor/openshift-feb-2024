@@ -20,6 +20,7 @@ spec:
       containers:
       - name: mongodb
         image: bitnami/mongodb:latest
+        imagePullPolicy: IfNotPresent
 
         volumeMounts:
         - name: mongodb-storage
