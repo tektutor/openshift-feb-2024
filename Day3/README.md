@@ -291,6 +291,11 @@ cd Day3/wordpress
 ./delete-all.sh
 ```
 
+## What is Helm?
+- it is a Kubernetes/Openshift package manager
+- just like linux distributions has their own package managers to install/uninstall/upgrade softwares, Helm let's download and install openshift/kubernetes applications that comes as tar.gz file packaged in a specific a way called Charts.
+- Using the Helm charts we can install/uninstall/upgrade softwares deployed in Openshift or Kubernetes cluster
+
 ## Lab - Installing Helm in your RPS CentOS Lab Machine
 ```
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -326,7 +331,9 @@ cd Day3/mongodb
 
 Let's create a mongodb client pod
 ```
-kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
+oc project jegan
+
+kubectl run mongodb-client --rm --tty -i --restart='Never' --image docker.io/bitnami/mongodb:latest --command -- bash
 
 mongosh mongodb.jegan.svc.cluster.local -u root -p
 
@@ -335,6 +342,19 @@ use tektutor
 db.movies.insertOne(
   {
     title: "The Favourite",
+    genres: [ "Drama", "History" ],
+    runtime: 121,
+    rated: "R",
+    year: 2018,
+    directors: [ "Yorgos Lanthimos" ],
+    cast: [ "Olivia Colman", "Emma Stone", "Rachel Weisz" ],
+    type: "movie"
+  }
+)
+
+db.movies.insertOne(
+  {
+    title: "KGF",
     genres: [ "Drama", "History" ],
     runtime: 121,
     rated: "R",
