@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.pvc.mysqlPVCName }} 
+spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.yourProjectName }} 
+  accessModes:
+  - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.pv.wordpressPVSize }} 

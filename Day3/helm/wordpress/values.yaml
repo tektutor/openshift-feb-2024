@@ -1,0 +1,20 @@
+image:
+  pullPolicy: IfNotPresent
+
+nfs:
+  serverIP: 192.168.1.127
+  mysqlNFSPath: "/var/nfs/jegan/mysql"
+  wordpressNFSPath: "/var/nfs/jegan/wordpress"
+
+yourProjectName: jegan
+
+pv:
+  mysqlPVName: "mysql-pv-jegan"
+  mysqlPVSize: 100Mi
+
+  wordpressPVName: "wordpress-pv-jegan"
+  wordpressPVSize: 100Mi
+
+pvc:
+  mysqlPVCName: "mysql-pvc-jegan"
+  wordpressPVCName: "wordpress-pvc-jegan"
