@@ -296,6 +296,22 @@ chmod 700 get_helm.sh
 ./get_helm.sh
 ```
 
+Expected output
+<pre>
+[jegan@tektutor.org Day3]$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+Downloading https://get.helm.sh/helm-v3.14.2-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+[sudo] password for jegan: 
+helm installed into /usr/local/bin/helm
+  
+[jegan@tektutor.org Day3]$ helm version
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/jegan/.kube/config
+version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}  
+</pre>
+
 ## Lab - Deploying MongoDB into OpenShift
 ```
 oc new-project jegan
