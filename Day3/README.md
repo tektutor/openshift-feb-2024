@@ -326,7 +326,7 @@ cd Day3/mongodb
 
 Let's create a mongodb client pod
 ```
-kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:7.0.5-debian-12-r4 --command -- bash
+kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=root@123" --image docker.io/bitnami/mongodb:latest --command -- bash
 
 mongosh mongodb.jegan.svc.cluster.local -u root -p
 
@@ -335,6 +335,19 @@ use tektutor
 db.movies.insertOne(
   {
     title: "The Favourite",
+    genres: [ "Drama", "History" ],
+    runtime: 121,
+    rated: "R",
+    year: 2018,
+    directors: [ "Yorgos Lanthimos" ],
+    cast: [ "Olivia Colman", "Emma Stone", "Rachel Weisz" ],
+    type: "movie"
+  }
+)
+
+db.movies.insertOne(
+  {
+    title: "KGF",
     genres: [ "Drama", "History" ],
     runtime: 121,
     rated: "R",
