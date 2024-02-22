@@ -296,4 +296,60 @@ chmod 700 get_helm.sh
 ./get_helm.sh
 ```
 
+Expected output
+<pre>
+[jegan@tektutor.org Day3]$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+Downloading https://get.helm.sh/helm-v3.14.2-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+[sudo] password for jegan: 
+helm installed into /usr/local/bin/helm
+  
+[jegan@tektutor.org Day3]$ helm version
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/jegan/.kube/config
+version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}  
+</pre>
+
+## Lab - Deploying MongoDB into OpenShift
+```
+oc new-project jegan
+helm repo add bitnami https://charts.bitnami.com/bitnami
+export MONGODB_ROOT_PASSWORD=root@123
+export MONGODB_REPLICA_SET_KEY=root@123
+
+helm install mongodb bitnami/mongodb --set podSecurityContext.fsGroup="",containerSecurityContext.runAsUser="1001080001",podSecurityContext.enabled=false,architecture=replicaset,auth.replicaSetKey=$MONGODB_REPLICA_SET_KEY,auth.rootPassword=$MONGODB_ROOT_PASSWORD
+
+export MONGODB_ROOT_PASSWORD=$(kubectl get secret --namespace jegan mongodb -o jsonpath="{.data.mongodb-root-password}" | base64 --decode)
+
+kubectl run --namespace jegan mongodb-client --rm --tty -i --restart='Never' --env="MONGODB_ROOT_PASSWORD=$MONGODB_ROOT_PASSWORD" --image docker.io/bitnami/mongodb:4.4.13-debian-10-r9 --command -- bash
+
+## Option-1 Using host addres
+mongo admin --host "mongodb-0.mongodb-headless.ksingh.svc.cluster.local:27017,mongodb-1.mongodb-headless.jegan.svc.cluster.local:27017" --authenticationDatabase admin -u root -p $MONGODB_ROOT_PASSWORD
+
+## Option-2 Using MongoDB URI
+mongo "mongodb://mongodb-0.mongodb-headless.ksingh.svc.cluster.local:27017,mongodb-1.mongodb-headless.jegan.svc.cluster.local:27017" --authenticationDatabase admin  -u root -p $MONGODB_ROOT_PASSWORD
+
+use mydb
+
+db.post.insert([
+  {
+    title: "MongoDB to Kafka testing",
+    description: "Debezium connector",
+    by: "Karan",
+    url: "http://redhat.com",
+    tags: ["mongodb", "debezium", "ROSAK"],
+    likes: 100
+  }
+])
+
+show dbs
+db.post.find()
+
+kubectl port-forward service/mongodb-external-0 27017 &
+
+
+
+```
 
