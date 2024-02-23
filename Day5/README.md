@@ -3,7 +3,7 @@
 ## Post test link(Kindly take this test from RPS Lab machine)
 https://app.mymapit.in/code4/tiny/v6VtVv
 
-## Feedback link (kindly fill this)
+## Feedback link (kindly fill this - try this from RPS Lab machine)
 https://survey.zohopublic.com/zs/QZCOHJ
 
 ## Lab - BuildConfig
