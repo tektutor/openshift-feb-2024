@@ -15,7 +15,7 @@ spec:
         app: hello
     spec:
       containers:
-      - image: openshiftindia/spring-ms:latest
+      - image: openshiftindia/spring-ms:1.0
         imagePullPolicy: IfNotPresent
         name: spring-ms
 ---
@@ -24,7 +24,7 @@ kind: Service
 metadata:
   labels:
     app: hello
-  name: hello
+  name: hello-v1
 spec:
   ports:
   - port: 8080

@@ -1,4 +1,3 @@
-#FROM docker.io/maven:3.6.3-jdk-11 as stage1
 FROM registry.access.redhat.com/ubi8/openjdk-11
 COPY . .
 RUN mvn clean package

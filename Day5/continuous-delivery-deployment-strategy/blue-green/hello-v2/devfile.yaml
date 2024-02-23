@@ -14,7 +14,7 @@ metadata:
 components:
   - name: image-build
     image:
-      imageName: tektutor-spring-microservice:latest
+      imageName: tektutor-spring-microservice:2.0
       dockerfile:
         uri: Dockerfile
         buildContext: .

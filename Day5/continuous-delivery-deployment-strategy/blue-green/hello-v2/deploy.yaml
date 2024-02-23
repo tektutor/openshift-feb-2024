@@ -15,7 +15,8 @@ spec:
         app: hello
     spec:
       containers:
-      - image: openshiftindia/spring-ms:latest
+      - image: tektutor-spring-microservice:2.0 
+        imagePullPolicy: IfNotPresent
         name: spring-ms
 ---
 apiVersion: v1
@@ -23,7 +24,7 @@ kind: Service
 metadata:
   labels:
     app: hello
-  name: hello
+  name: hello-v2
 spec:
   ports:
   - port: 8080
