@@ -44,6 +44,17 @@ oc expose svc/spring-ms
 Upgrading the openssl in CentOS
 https://webhostinggeeks.com/howto/install-update-openssl-centos/
 
+Find your Openshift cluster domain
+```
+oc get ingresses.config/cluster -o jsonpath={.spec.domain}
+```
+Expected similar output
+<pre>
+[jegan@tektutor.org openshift-feb-2024]$ oc get ingresses.config/cluster -o jsonpath={.spec.domain}
+apps.ocp4.training.tektutor  
+</pre>
+
+
 Installing build tools to compile openssl from source code
 ```
 sudo yum groupinstall 'Development Tools'
