@@ -1,6 +1,12 @@
 # Day5
 
 ## Info - Installing JFrog Artifactory Pro in RHEL/CentOS
+
+#### Pre-requisites
+- JFrog expects an official email-id to request for a trail license, hence *** I suggest not to try this ***
+- You need to be an Administrator on the Linux Server
+- You need to have a trial license of JFrog Artifactory Pro
+
 ```
 sudo -i
 
