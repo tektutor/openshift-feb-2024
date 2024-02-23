@@ -1,5 +1,100 @@
 # Day5
 
+## Lab - BuildConfig
+```
+oc project
+oc new-app https://github.com/tektutor/openshift-feb-2024.git --context-dir=Day5/BuildConfig --strategy=source
+```
+Expected output
+<pre>
+[jegan@tektutor.org openshift-feb-2024]$ oc new-app https://github.com/tektutor/openshift-feb-2024.git --context-dir=Day5/BuildConfig --strategy=source
+error: No language matched the source repository
+[jegan@tektutor.org openshift-feb-2024]$ oc new-app registry.access.redhat.com/ubi8/openjdk-11~https://github.com/tektutor/openshift-feb-2024.git --context-dir=Day5/BuildConfig --strategy=source
+--> Found container image 17d970f (5 weeks old) from registry.access.redhat.com for "registry.access.redhat.com/ubi8/openjdk-11"
+
+    Java Applications 
+    ----------------- 
+    Platform for building and running plain Java applications (fat-jar and flat classpath)
+
+    Tags: builder, java
+
+    * An image stream tag will be created as "openjdk-11:latest" that will track the source image
+    * A source build using source code from https://github.com/tektutor/openshift-feb-2024.git will be created
+      * The resulting image will be pushed to image stream tag "openshift-feb-2024:latest"
+      * Every time "openjdk-11:latest" changes a new build will be triggered
+
+--> Creating resources ...
+    imagestream.image.openshift.io "openjdk-11" created
+    imagestream.image.openshift.io "openshift-feb-2024" created
+    buildconfig.build.openshift.io "openshift-feb-2024" created
+    deployment.apps "openshift-feb-2024" created
+    service "openshift-feb-2024" created
+--> Success
+    Build scheduled, use 'oc logs -f buildconfig/openshift-feb-2024' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose service/openshift-feb-2024' 
+    Run 'oc status' to view your app.
+[jegan@tektutor.org openshift-feb-2024]$ oc get buildconfigs
+NAME                 TYPE     FROM   LATEST
+openshift-feb-2024   Source   Git    1
+[jegan@tektutor.org openshift-feb-2024]$ oc get buildconfig
+NAME                 TYPE     FROM   LATEST
+openshift-feb-2024   Source   Git    1
+[jegan@tektutor.org openshift-feb-2024]$ oc get bc
+NAME                 TYPE     FROM   LATEST
+openshift-feb-2024   Source   Git    1
+[jegan@tektutor.org openshift-feb-2024]$ oc logs -f bc/openshift-feb-2024
+Cloning "https://github.com/tektutor/openshift-feb-2024.git" ...
+	Commit:	81a7be62fc2f4fbfdb8575e61294d0af1c04f6bd (Merge branch 'main' of https://github.com/tektutor/openshift-feb-2024)
+	Author:	Jeganathan Swaminathan <mail2jegan@gmail.com>
+	Date:	Fri Feb 23 12:50:08 2024 +0530
+time="2024-02-23T07:24:27Z" level=info msg="Not using native diff for overlay, this may cause degraded performance for building images: kernel has CONFIG_OVERLAY_FS_REDIRECT_DIR enabled"
+I0223 07:24:27.636172       1 defaults.go:112] Defaulting to storage driver "overlay" with options [mountopt=metacopy=on].
+Caching blobs under "/var/cache/blobs".
+Trying to pull registry.access.redhat.com/ubi8/openjdk-11@sha256:b85cbdbc289752c91ac7f468cffef916fe9ab01865f3e32cfcc44ccdd633b168...
+Getting image source signatures
+Copying blob sha256:00002eebe0f599331474f07547167ad83154a7a902f19a133af9a6f5e08a1dfa
+Copying blob sha256:dc35b837139a95d1b9f7f7b0435a024a74ab972416bdc248f3f608c9f917a753
+Copying config sha256:17d970f7d5f789087e305ec68b8146195107db18aca710ae8c7de6ac91051504
+Writing manifest to image destination
+Generating dockerfile with builder image registry.access.redhat.com/ubi8/openjdk-11@sha256:b85cbdbc289752c91ac7f468cffef916fe9ab01865f3e32cfcc44ccdd633b168
+Adding transient rw bind mount for /run/secrets/rhsm
+STEP 1/9: FROM registry.access.redhat.com/ubi8/openjdk-11@sha256:b85cbdbc289752c91ac7f468cffef916fe9ab01865f3e32cfcc44ccdd633b168
+STEP 2/9: LABEL "io.openshift.build.commit.date"="Fri Feb 23 12:50:08 2024 +0530"       "io.openshift.build.source-location"="https://github.com/tektutor/openshift-feb-2024.git"       "io.openshift.build.source-context-dir"="Day5/BuildConfig"       "io.openshift.s2i.destination"="/tmp"       "io.openshift.build.image"="registry.access.redhat.com/ubi8/openjdk-11@sha256:b85cbdbc289752c91ac7f468cffef916fe9ab01865f3e32cfcc44ccdd633b168"       "io.openshift.build.commit.author"="Jeganathan Swaminathan <mail2jegan@gmail.com>"       "io.openshift.build.commit.id"="81a7be62fc2f4fbfdb8575e61294d0af1c04f6bd"       "io.openshift.build.commit.ref"="main"       "io.openshift.build.commit.message"="Merge branch 'main' of https://github.com/tektutor/openshift-feb-2024"
+STEP 3/9: ENV OPENSHIFT_BUILD_NAME="openshift-feb-2024-1"     OPENSHIFT_BUILD_NAMESPACE="jegan-devops"     OPENSHIFT_BUILD_SOURCE="https://github.com/tektutor/openshift-feb-2024.git"     OPENSHIFT_BUILD_COMMIT="81a7be62fc2f4fbfdb8575e61294d0af1c04f6bd"
+STEP 4/9: USER root
+STEP 5/9: COPY upload/src /tmp/src
+STEP 6/9: RUN chown -R 185:0 /tmp/src
+STEP 7/9: USER 185
+STEP 8/9: RUN /usr/local/s2i/assemble
+INFO S2I source build with plain binaries detected
+INFO Copying binaries from /tmp/src to /deployments ...
+buildconfig.yml
+INFO Cleaning up source directory (/tmp/src)
+STEP 9/9: CMD /usr/local/s2i/run
+COMMIT temp.builder.openshift.io/jegan-devops/openshift-feb-2024-1:af7ca7ad
+Getting image source signatures
+Copying blob sha256:1053d00b8e292c8a36bef630a0f4977b29da4e2fd60ac9425e0fcd1f7c1108d5
+Copying blob sha256:69d590f110c1a3ded20b01162470dd317250ee684ec42378e93fa93a569edaa9
+Copying blob sha256:a68ae82be6304e734636de25540f03cb356e964301e80f0df4d4d7dab0a95ee1
+Copying config sha256:4dcf630618c7b768b373832c3158c78d5a5361ea7e85397e54306ef5707e073a
+Writing manifest to image destination
+--> 4dcf630618c7
+Successfully tagged temp.builder.openshift.io/jegan-devops/openshift-feb-2024-1:af7ca7ad
+4dcf630618c7b768b373832c3158c78d5a5361ea7e85397e54306ef5707e073a
+
+Pushing image image-registry.openshift-image-registry.svc:5000/jegan-devops/openshift-feb-2024:latest ...
+Getting image source signatures
+Copying blob sha256:a68ae82be6304e734636de25540f03cb356e964301e80f0df4d4d7dab0a95ee1
+Copying blob sha256:dc35b837139a95d1b9f7f7b0435a024a74ab972416bdc248f3f608c9f917a753
+Copying blob sha256:00002eebe0f599331474f07547167ad83154a7a902f19a133af9a6f5e08a1dfa
+Copying config sha256:4dcf630618c7b768b373832c3158c78d5a5361ea7e85397e54306ef5707e073a
+Writing manifest to image destination
+Successfully pushed image-registry.openshift-image-registry.svc:5000/jegan-devops/openshift-feb-2024@sha256:41d4e9d37ab0d8ed50a5e1b1fac9494c0a30a6df85bddb65056a8e87740f7e96
+Push successful
+</pre>
+
+
 ## Info - Installing JFrog Artifactory Pro in RHEL/CentOS
 
 #### Pre-requisites
@@ -230,3 +325,20 @@ conf.d        fastcgi.conf.default    koi-utf     mime.types.default  scgi_param
 default.d     fastcgi_params          koi-win     nginx.conf          scgi_params.default  uwsgi_params
 fastcgi.conf  fastcgi_params.default  mime.types  nginx.conf.default  sites-available      uwsgi_params.default  
 </pre>
+
+## What is a Canary deployment strategy?
+- is a progressive rollout of an application that splits traffic between an already deployed version and a new version
+- rolling it out to a subset of users before rolling out fully
+- advantages
+  - gives us a chance to partially release our application
+  - we can ensure the new version of our application is reliable before we can deliver it to all users
+  - we could deploy the new version of our application to a limited number of pods
+  - the old version would continue to run, but with more of the traffic being sent to the new pods
+ 
+## Blue Green vs Canary Deployment Strategy
+- blue-green and Canary deployments are two popular strategies for continuous delivery
+- aims to deliver software updates faster and more reliably
+- both methods, allows us release new version of software without disrupting the existing service
+- the main difference is that blue-green deployments switches all the traffic from old version(blue) to the new version(green) at once
+- while canary deployments gradually exposes a small percentage of the traffic to the new version(canary) and monitor its performance and user behaviour before rolling it out to the wider audience
+
