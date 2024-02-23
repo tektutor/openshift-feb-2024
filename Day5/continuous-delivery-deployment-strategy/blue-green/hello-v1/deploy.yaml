@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
       - image: openshiftindia/spring-ms:latest
+        imagePullPolicy: IfNotPresent
         name: spring-ms
 ---
 apiVersion: v1
