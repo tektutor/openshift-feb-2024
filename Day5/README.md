@@ -325,3 +325,20 @@ conf.d        fastcgi.conf.default    koi-utf     mime.types.default  scgi_param
 default.d     fastcgi_params          koi-win     nginx.conf          scgi_params.default  uwsgi_params
 fastcgi.conf  fastcgi_params.default  mime.types  nginx.conf.default  sites-available      uwsgi_params.default  
 </pre>
+
+## What is a Canary deployment strategy?
+- is a progressive rollout of an application that splits traffic between an already deployed version and a new version
+- rolling it out to a subset of users before rolling out fully
+- advantages
+  - gives us a chance to partially release our application
+  - we can ensure the new version of our application is reliable before we can deliver it to all users
+  - we could deploy the new version of our application to a limited number of pods
+  - the old version would continue to run, but with more of the traffic being sent to the new pods
+ 
+## Blue Green vs Canary Deployment Strategy
+- blue-green and Canary deployments are two popular strategies for continuous delivery
+- aims to deliver software updates faster and more reliably
+- both methods, allows us release new version of software without disrupting the existing service
+- the main difference is that blue-green deployments switches all the traffic from old version(blue) to the new version(green) at once
+- while canary deployments gradually exposes a small percentage of the traffic to the new version(canary) and monitor its performance and user behaviour before rolling it out to the wider audience
+
