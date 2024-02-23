@@ -150,7 +150,16 @@ http://localhost:8082/
 ```
 
 Expected output
-
+![JFrog Artifactory](jfrog-1.png)
+![JFrog Artifactory](jfrog-2.png)
+![JFrog Artifactory](jfrog-3.png)
+![JFrog Artifactory](jfrog-4.png)
+![JFrog Artifactory](jfrog-5.png)
+![JFrog Artifactory](jfrog-6.png)
+![JFrog Artifactory](jfrog-7.png)
+![JFrog Artifactory](jfrog-8.png)
+![JFrog Artifactory](jfrog-9.png)
+![JFrog Artifactory](jfrog-10.png)
 
 
 Let's install nginx as reverse proxy for JFrog Artifactory
