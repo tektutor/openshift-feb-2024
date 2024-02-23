@@ -113,9 +113,10 @@ You can find more Xray information in the log directory /opt/jfrog/xray/var/log
 Once the application has started, it can be accessed at [http://208.91.198.52:8082]  
 </pre>
 
-We need to start the JFrog Artifactory service
+We need to start the JFrog Artifactory service, xray is optional
 ```
 sudo systemctl start artifactory.service
+sudo systemctl start xray.service
 ```
 
 Once the JFrog Artifactory Server is up and running, we may access its dashboard 
