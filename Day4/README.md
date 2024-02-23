@@ -52,6 +52,7 @@ cd /usr/src
 wget https://www.openssl.org/source/openssl-3.0.0.tar.gz
 tar -zxf openssl-3.0.0.tar.gz
 rm openssl-3.0.0.tar.gz
+dnf install perl
 cd /usr/src/openssl-3.0.0
 ./config
 make
