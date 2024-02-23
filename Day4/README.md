@@ -79,5 +79,5 @@ Let's deploy a microservice and create an edge route as shown below
 openssl genrsa -out key.key
 openssl req -new -key key.key -out csr.csr -subj="/CN=hello-jegan.apps.ocp.tektutor-ocp-labs"
 openssl x509 -req -in csr.csr -signkey key.key -out crt.crt
-oc create route edge --service spring-ms --hostname hello-jegan.apps.ocp.tektutor-ocp-labs --key key.key --cert crt.crt
+oc create route edge --service spring-ms --hostname hello-jegan.apps.ocp4.training.tektutor --key key.key --cert crt.crt
 ```
