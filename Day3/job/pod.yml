@@ -1,9 +1,8 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: v1
+kind: Pod 
 metadata:
-  name: hello-job
+  name: hello-pod
 spec:
-  completions: 1             
   template:
     spec:
       containers:
